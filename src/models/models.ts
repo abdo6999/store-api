@@ -1,5 +1,5 @@
 class Product {
-  id!: number;
+  id?: number;
   title!: string;
   price!: number;
   rating!: number;
@@ -34,32 +34,35 @@ class Product {
   }
 }
 
-class UserData {
-  id!: number;
-  fristname!: string;
-  lastname!: string;
+class User {
+  id?: number;
+  firstName!: string;
+  lastName!: string;
   password!: string;
   email!: string;
   gender!: string;
+  username!:string;
   constructor(
     id: number,
-    fristname: string,
-    lastname: string,
+    firstName: string,
+    lastName: string,
     password: string,
     email: string,
-    gender: string
+    gender: string,
+    username:string
   ) {
     this.id = id;
-    this.fristname = fristname;
-    this.lastname = lastname;
+    this.firstName = firstName;
+    this.lastName = lastName;
     this.password = password;
     this.email = email;
     this.gender = gender;
+    this.username = username
   }
 }
 
-class Orders {
-  id!: number;
+class Order {
+  id?: number;
   products_id!: number[];
   user_id!: number;
   stutas!: Boolean;
@@ -79,4 +82,4 @@ class Orders {
     this.orderDate = orderDate;
   }
 }
-export  {Product,UserData,Orders}
+export  {Product,User,Order}

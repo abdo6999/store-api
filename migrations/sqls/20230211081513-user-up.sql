@@ -1,9 +1,10 @@
 /* Replace with your SQL commands */
-CREATE TABLE userData(
+CREATE TABLE users(
   id SERIAL PRIMARY KEY,
-  fristname VARCHAR(255) NOT NULL,
-  lastname VARCHAR(255) NOT NULL,
-  password VARCHAR(128) NOT NULL,
-  email VARCHAR(255),
-  gender VARCHAR(8)
+  firstName VARCHAR(255) NOT NULL,
+  lastName VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  email VARCHAR(128) NOT NULL,
+  gender VARCHAR(8),
+  username VARCHAR(255)
 );
