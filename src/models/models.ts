@@ -41,7 +41,7 @@ class User {
   password!: string;
   email!: string;
   gender!: string;
-  username!:string;
+  username!: string;
   constructor(
     id: number,
     firstName: string,
@@ -49,7 +49,7 @@ class User {
     password: string,
     email: string,
     gender: string,
-    username:string
+    username: string
   ) {
     this.id = id;
     this.firstName = firstName;
@@ -57,7 +57,7 @@ class User {
     this.password = password;
     this.email = email;
     this.gender = gender;
-    this.username = username
+    this.username = username;
   }
 }
 
@@ -82,4 +82,4 @@ class Order {
     this.orderDate = orderDate;
   }
 }
-export  {Product,User,Order}
+export { Product, User, Order };

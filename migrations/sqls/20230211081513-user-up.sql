@@ -6,5 +6,5 @@ CREATE TABLE users(
   password VARCHAR(255) NOT NULL,
   email VARCHAR(128) NOT NULL,
   gender VARCHAR(8),
-  username VARCHAR(255)
+  username VARCHAR(255) UNIQUE 
 );

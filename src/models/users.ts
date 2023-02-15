@@ -1,9 +1,7 @@
 import Client from "../database";
 import { User } from "./models";
-import * as bcrypt from "bcrypt";
-import * as env from "dotenv";
-env.config();
-const { DCRYPT_PASSWORD: pepper, saltRounds } = process.env;
+import hashpass  from "../helpers/hashpassword";
+import jwtToken from "../helpers/jwt";
 export class UserTable {
   async index(): Promise<User[]> {
     try {
@@ -26,16 +24,17 @@ export class UserTable {
       throw new Error(`Could not find users ${id}. Error: ${err}`);
     }
   }
-  async create(u: User): Promise<User> {
+  async create(u: User): Promise<object> {
     try {
       const conn = await Client.connect();
-      u.password = bcrypt.hashSync(u.password + pepper, parseInt(saltRounds!));
+      u.password = hashpass.hash(u.password);
       let data = Object.values(u);
       const sql = createUser(u);
       const result = await conn.query(sql, data);
-      const User = result.rows[0];
+      const userToken = jwtToken.sign({username: u.username});
+      const userRefreshToken = jwtToken.signRefresh({username: u.username});
       conn.release();
-      return User;
+      return { accessToken: userToken , refreshToken: userRefreshToken };
     } catch (err) {
       throw new Error(`Could not add new user ${u.firstName}. Error: ${err}`);
     }
@@ -44,24 +43,28 @@ export class UserTable {
     try {
       const conn = await Client.connect();
       const sql = updateUserByID(p, id);
-      const resualt = await conn.query(sql);
+      let data = Object.values(p);
+      const resualt = await conn.query(sql, data);
       return resualt.rows[0];
     } catch (error) {
       throw new Error(`cannot connect with users ${error}`);
     }
   }
-  async authenticate(username: string,password:string): Promise<User|null> {
+  async authenticate(
+    username: string,
+    password: string
+  ): Promise<object | null> {
     try {
       const conn = await Client.connect();
-      const sql = "SELECT password FROM users WHERE username=($1)";
-      const resualt = await conn.query(sql,[username]);
-      if(resualt.rows.length){
-        const user = resualt.rows[0]
-        if(bcrypt.compareSync(password+pepper, user.password)){
-          return user
+      const sql = "SELECT * FROM users WHERE username=($1)";
+      const resualt = await conn.query(sql, [username]);
+      if (resualt.rows.length) {
+        const user = resualt.rows[0];
+        if (hashpass.compare(password,user.password)) {
+          return { accessToken: jwtToken.sign({username: user.username}),refreshToken: jwtToken.signRefresh({username: user.username}) };
         }
       }
-      return null
+      return null;
     } catch (error) {
       throw new Error(`cannot connect with users ${error}`);
     }
@@ -76,18 +79,39 @@ export class UserTable {
       throw new Error(`cannot connect with users ${error}`);
     }
   }
-}
+  async deleteAll(): Promise<User> {
+    try {
+      const conn = await Client.connect();
+      const sql = "DELETE * FROM  products;";
+      const resualt = await conn.query(sql);
+      conn.release();
+      return resualt.rows[0];
+    } catch (error) {
+      throw new Error(`cannot connect with products ${error}`);
+    }
+  }
+} // user end
 
 function updateUserByID(cols: Partial<User>, id: number) {
   var query = ["UPDATE users"];
-  query.push("SET");
+  query.push(" SET");
 
   var set: string[] = [];
   Object.keys(cols).forEach(function(key, i) {
     set.push(key + " = ($" + (i + 1) + ")");
   });
   query.push(set.join(", "));
-  query.push("WHERE id = " + id + "RETURNING *");
+  let reg = /^([\w\-]+)/;
+  let updatValus: string[] = set.map(a => a.match(reg)![0]);
+  let element = "";
+  for (let i = 0; i < updatValus.length; i++) {
+    element += updatValus[i];
+    if (i < updatValus.length - 1) {
+      element += ",";
+    }
+  }
+  console.log(element);
+  query.push("WHERE id = " + id + "RETURNING " + element);
   return query.join(" ");
 }
 

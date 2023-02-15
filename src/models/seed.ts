@@ -1,61 +1,39 @@
 import Client from "../database";
 import { Product, User } from "./models";
 import * as bcrypt from "bcrypt";
-import * as env from 'dotenv';
-env.config()
-const {DCRYPT_PASSWORD : pepper ,
-saltRounds} = process.env
+import * as env from "dotenv";
+env.config();
+const { pepper, saltRounds } = process.env;
 createProduct(dataProduct());
 createUser(dataUser());
 async function createProduct(p: Product[]) {
   try {
-    const sql =
-      "INSERT INTO products (id, title, price, rating, stock, brand, description, category, thumbnail, images) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
-    // @ts-ignore
     const conn = await Client.connect();
     let result;
     for (let i = 0; i < p.length; i++) {
       let pIndex = p[i];
-      result = await conn.query(sql, [
-        pIndex.id,
-        pIndex.title,
-        pIndex.price,
-        pIndex.rating,
-        pIndex.stock,
-        pIndex.brand,
-        pIndex.description,
-        pIndex.category,
-        pIndex.thumbnail,
-        pIndex.images
-      ]);
+      const sql = createSqlProduct(pIndex);
+      let data = Object.values(pIndex);
+      result = await conn.query(sql, data);
     }
     conn.release();
   } catch (err) {
-    throw new Error(`Could not add new Products . Error: ${err}`);
+    throw new Error(`Could not add new Products . ${err}`);
   }
 }
 async function createUser(p: User[]) {
   try {
-    const sql =
-      "INSERT INTO users (id, title, price, rating, stock, brand, description, category, thumbnail, images) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)";
-    // @ts-ignore
     const conn = await Client.connect();
     let result;
     for (let i = 0; i < p.length; i++) {
       let pIndex = p[i];
-      pIndex.password = Buffer.from(pIndex.password).toString('ascii');
-      result = await conn.query(sql, [
-        pIndex.id,
-        pIndex.firstName,
-        pIndex.lastName,
-        bcrypt.hashSync(
-          pIndex.password + pepper, 
-          parseInt(saltRounds!)
-       ),
-        pIndex.email,
-        pIndex.gender,
-        pIndex.username
-      ]);
+      pIndex.password = bcrypt.hashSync(
+        pIndex.password + pepper,
+        parseInt(saltRounds!)
+      );
+      let data = Object.values(pIndex);
+      const sql = createSqlUser(pIndex);
+      result = await conn.query(sql, data);
     }
     conn.release();
   } catch (err) {
@@ -65,88 +43,78 @@ async function createUser(p: User[]) {
 function dataUser(): User[] {
   return [
     {
-      id: 1,
       firstName: "Terry",
       lastName: "Medhurst",
       gender: "male",
       email: "atuny0@sohu.com",
       username: "atuny0",
-      password: "9uQFF1Lh"
+      password: "23423fgsdgsd"
     },
     {
-      id: 2,
       firstName: "Sheldon",
       lastName: "Quigley",
       gender: "male",
       email: "hbingley1@plala.or.jp",
       username: "hbingley1",
-      password: "CQutx25i8r"
+      password: "2342fgds"
     },
     {
-      id: 3,
       firstName: "Terrill",
       lastName: "Hills",
       gender: "male",
       email: "rshawe2@51.la",
       username: "rshawe2",
-      password: "OWsTbMUgFc"
+      password: "235234534fg"
     },
     {
-      id: 4,
       firstName: "Miles",
       lastName: "Cummerata",
       gender: "male",
       email: "yraigatt3@nature.com",
       username: "yraigatt3",
-      password: "sRQxjPfdS"
+      password: "dfhfghf"
     },
     {
-      id: 5,
       firstName: "Mavis",
       lastName: "Schultz",
       gender: "male",
       email: "kmeus4@upenn.edu",
       username: "kmeus4",
-      password: "aUTdmmmbH"
+      password: "fghfdhdfgh"
     },
     {
-      id: 6,
       firstName: "Alison",
       lastName: "Reichert",
       gender: "female",
       email: "jtreleven5@nhs.uk",
       username: "jtreleven5",
-      password: "zY1nE46Zm"
+      password: "fghghfdh"
     },
     {
-      id: 7,
       firstName: "Oleta",
       lastName: "Abbott",
       gender: "female",
       email: "dpettegre6@columbia.edu",
       username: "dpettegre6",
-      password: "YVmhktgYVS"
+      password: "dfasfsdfs"
     },
     {
-      id: 8,
       firstName: "Ewell",
       lastName: "Mueller",
       gender: "male",
       email: "ggude7@chron.com",
       username: "ggude7",
-      password: "MWwlaeWcOoF6"
+      password: "ffffff"
     },
     {
-      id: 9,
       firstName: "Demetrius",
       lastName: "Corkery",
       gender: "male",
       email: "nloiterton8@aol.com",
       username: "nloiterton8",
-      password: "HTQxxXV9Bq4"
+      password: "dddddd"
     },
     {
-      id: 10,
       firstName: "Eleanora",
       lastName: "Price",
       gender: "female",
@@ -159,7 +127,6 @@ function dataUser(): User[] {
 function dataProduct(): Product[] {
   return [
     {
-      id: 1,
       title: "iPhone 9",
       description: "An apple mobile which is nothing like apple",
       price: 549,
@@ -177,7 +144,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 2,
       title: "iPhone X",
       description:
         "SIM-Free, Model A19211 6.5-inch Super Retina HD display with OLED technology A12 Bionic chip with ...",
@@ -195,7 +161,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 3,
       title: "Samsung Universe 9",
       description:
         "Samsung's new variant which goes beyond Galaxy to the Universe",
@@ -208,7 +173,6 @@ function dataProduct(): Product[] {
       images: ["https://i.dummyjson.com/data/products/3/1.jpg"]
     },
     {
-      id: 4,
       title: "OPPOF19",
       description: "OPPO F19 is officially announced on April 2021.",
       price: 280,
@@ -226,7 +190,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 5,
       title: "Huawei P30",
       description:
         "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
@@ -243,7 +206,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 6,
       title: "MacBook Pro",
       description:
         "MacBook Pro 2021 with mini-LED display may launch between September, November",
@@ -261,7 +223,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 7,
       title: "Samsung Galaxy Book",
       description:
         "Samsung Galaxy Book S (2020) Laptop With Intel Lakefield Chip, 8GB of RAM Launched",
@@ -279,7 +240,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 8,
       title: "Microsoft Surface Laptop 4",
       description:
         "Style and speed. Stand out on HD video calls backed by Studio Mics. Capture ideas on the vibrant touchscreen.",
@@ -298,7 +258,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 9,
       title: "Infinix INBOOK",
       description:
         "Infinix Inbook X1 Ci3 10th 8GB 256GB 14 Win10 Grey – 1 Year Warranty",
@@ -317,7 +276,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 11,
       title: "perfume Oil",
       description:
         "Mega Discount, Impression of Acqua Di Gio by GiorgioArmani concentrated attar perfume Oil",
@@ -335,7 +293,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 12,
       title: "Brown Perfume",
       description: "Royal_Mirage Sport Brown Perfume for Men & Women - 120ml",
       price: 40,
@@ -353,7 +310,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 13,
       title: "Fog Scent Xpressio Perfume",
       description:
         "Product details of Best Fog Scent Xpressio Perfume 100ml For Men cool long lasting perfumes for Men",
@@ -372,7 +328,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 14,
       title: "Non-Alcoholic Concentrated Perfume Oil",
       description:
         "Original Al Munakh® by Mahal Al Musk | Our Impression of Climate | 6ml Non-Alcoholic Concentrated Perfume Oil",
@@ -390,7 +345,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 15,
       title: "Eau De Perfume Spray",
       description:
         "Genuine  Al-Rehab spray perfume from UAE/Saudi Arabia/Yemen High Quality",
@@ -409,7 +363,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 16,
       title: "Hyaluronic Acid Serum",
       description:
         "L'OrÃ©al Paris introduces Hyaluron Expert Replumping Serum formulated with 1.5% Hyaluronic Acid",
@@ -428,7 +381,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 17,
       title: "Tree Oil 30ml",
       description:
         "Tea tree oil contains a number of compounds, including terpinen-4-ol, that have been shown to kill certain bacteria,",
@@ -446,7 +398,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 18,
       title: "Oil Free Moisturizer 100ml",
       description:
         "Dermive Oil Free Moisturizer with SPF 20 is specifically formulated with ceramides, hyaluronic acid & sunscreen.",
@@ -465,7 +416,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 19,
       title: "Skin Beauty Serum.",
       description:
         "Product name: rorec collagen hyaluronic acid white face serum riceNet weight: 15 m",
@@ -483,7 +433,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 20,
       title: "Freckle Treatment Cream- 15gm",
       description:
         "Fair & Clear is Pakistan's only pure Freckle cream which helpsfade Freckles, Darkspots and pigments. Mercury level is 0%, so there are no side effects.",
@@ -502,7 +451,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 21,
       title: "- Daal Masoor 500 grams",
       description: "Fine quality Branded Product Keep in a cool and dry place",
       price: 20,
@@ -518,7 +466,6 @@ function dataProduct(): Product[] {
       ]
     },
     {
-      id: 22,
       title: "Elbow Macaroni - 400 gm",
       description: "Product details of Bake Parlor Big Elbow Macaroni - 400 gm",
       price: 14,
@@ -534,4 +481,51 @@ function dataProduct(): Product[] {
       ]
     }
   ];
+}
+
+function createSqlProduct(cols: Product) {
+  let len = Object.keys(cols).length;
+  var query = ["INSERT INTO products("];
+  var set = [];
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(key + ",");
+    } else {
+      set.push(key);
+    }
+  });
+  set.push(") VALUES(");
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(`$${i + 1},`);
+    } else {
+      set.push(`$${i + 1}`);
+    }
+  });
+  set.push(") RETURNING *");
+  query.push(set.join(" "));
+  return query.join(" ");
+}
+function createSqlUser(cols: User) {
+  let len = Object.keys(cols).length;
+  var query = ["INSERT INTO users("];
+  var set = [];
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(key + ",");
+    } else {
+      set.push(key);
+    }
+  });
+  set.push(") VALUES(");
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(`$${i + 1},`);
+    } else {
+      set.push(`$${i + 1}`);
+    }
+  });
+  set.push(") RETURNING *");
+  query.push(set.join(" "));
+  return query.join(" ");
 }

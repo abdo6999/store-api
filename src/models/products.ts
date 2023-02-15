@@ -60,6 +60,17 @@ export class ProductTable {
       throw new Error(`cannot connect with products ${error}`);
     }
   }
+  async deleteAll(): Promise<Product> {
+    try {
+      const conn = await Client.connect();
+      const sql = "DELETE * FROM  products;";
+      const resualt = await conn.query(sql);
+      conn.release();
+      return resualt.rows[0];
+    } catch (error) {
+      throw new Error(`cannot connect with products ${error}`);
+    }
+  }
 } // end of class
 
 function updateProductByID(cols: Partial<Product>, id: number) {
@@ -70,7 +81,17 @@ function updateProductByID(cols: Partial<Product>, id: number) {
     set.push(key + " = ($" + (i + 1) + ")");
   });
   query.push(set.join(", "));
-  query.push("WHERE id = " + id + "RETURNING *");
+  let reg = /^([\w\-]+)/;
+  let updatValus: string[] = set.map(a => a.match(reg)![0]);
+  let element = "";
+  for (let i = 0; i < updatValus.length; i++) {
+    element += updatValus[i];
+    if (i < updatValus.length - 1) {
+      element += ",";
+    }
+  }
+  console.log(element);
+  query.push("WHERE id = " + id + "RETURNING " + element);
   return query.join(" ");
 }
 
@@ -93,7 +114,7 @@ function createProduct(cols: Product) {
       set.push(`$${i + 1}`);
     }
   });
-  set.push(") RETURNING *");
+  set.push(") RETURNING *;");
   query.push(set.join(" "));
   return query.join(" ");
 }

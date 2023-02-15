@@ -1,13 +1,15 @@
-import { ProductTable } from './../models/products';
-import { Request, Response } from 'express';
-import * as express from 'express';
-import { Product } from 'src/models/models';
+import { ProductTable } from "./../models/products";
+import { Request, Response } from "express";
+import * as express from "express";
+import { Product } from "src/models/models";
+import { authenticateToken } from "../helpers/middleware";
+
 const product = (app: express.Application) => {
-  app.get('/get-products', getProducts);
-  app.get('/show-product/:id', showProducts);
-  app.post('/create-product', createProducts)
-  app.patch('/update-product/:id', updateProducts)
-  app.delete('/delete-product/:id', deleteProducts);
+  app.get("/get-products", getProducts);
+  app.get("/show-product/:id", showProducts);
+  app.post("/create-product", authenticateToken, createProducts);
+  app.patch("/update-product/:id", updateProducts);
+  app.delete("/delete-product/:id", deleteProducts);
 };
 let productTable = new ProductTable();
 const getProducts = async (_req: Request, res: Response) => {
@@ -29,7 +31,7 @@ const createProducts = async (req: Request, res: Response) => {
 };
 const showProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productTable.show(parseInt(req.params.id) );
+    const products = await productTable.show(parseInt(req.params.id));
     res.json(products);
   } catch (error) {
     res.status(500).send(`cannot show products ${error}`);
@@ -38,7 +40,7 @@ const showProducts = async (req: Request, res: Response) => {
 const updateProducts = async (req: Request, res: Response) => {
   try {
     const data: Partial<Product> = { ...req.body };
-    const products = await productTable.update(data, parseInt(req.params.id) );
+    const products = await productTable.update(data, parseInt(req.params.id));
     res.json(products);
   } catch (error) {
     res.status(500).send(`cannot update products ${error}`);
@@ -46,7 +48,7 @@ const updateProducts = async (req: Request, res: Response) => {
 };
 const deleteProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productTable.delete(parseInt(req.params.id) );
+    const products = await productTable.delete(parseInt(req.params.id));
     res.json(products);
   } catch (error) {
     res.status(500).send(`cannot show products ${error}`);
