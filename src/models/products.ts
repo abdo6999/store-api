@@ -1,5 +1,5 @@
 import Client from "../database";
-import { Product } from "./models";
+import { Product } from "../helpers/models";
 
 export class ProductTable {
   async index(): Promise<Product[]> {
@@ -21,7 +21,7 @@ export class ProductTable {
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find products ${id}. Error: ${err}`);
+      throw new Error(`Could not find products ${id}. ${err}`);
     }
   }
   async create(p: Product): Promise<Product> {
@@ -34,7 +34,7 @@ export class ProductTable {
       conn.release();
       return product;
     } catch (err) {
-      throw new Error(`Could not add new book ${p.title}. Error: ${err}`);
+      throw new Error(`Could not add new book ${p.title}.  ${err}`);
     }
   }
   async update(p: Partial<Product>, id: number): Promise<Product> {
@@ -90,7 +90,6 @@ function updateProductByID(cols: Partial<Product>, id: number) {
       element += ",";
     }
   }
-  console.log(element);
   query.push("WHERE id = " + id + "RETURNING " + element);
   return query.join(" ");
 }

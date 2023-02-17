@@ -1,16 +1,16 @@
 import * as env from "dotenv";
 import { Pool } from "pg";
-env.config();
+env.config({ override: true });
 const {
   POSTGRES_HOST,
   POSTGRES_DB,
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_TEST_DB,
-  ENV
+  NODE_ENV_TEST,
 } = process.env;
 let Client: Pool;
-if (ENV == "test") {
+if (NODE_ENV_TEST) {
   Client = new Pool({
     host: POSTGRES_HOST,
     database: POSTGRES_TEST_DB,
@@ -25,5 +25,4 @@ if (ENV == "test") {
     password: POSTGRES_PASSWORD
   });
 }
-
 export default Client;

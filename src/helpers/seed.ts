@@ -1,11 +1,16 @@
 import Client from "../database";
-import { Product, User } from "./models";
+import { Order, Product, User } from "../helpers/models";
 import * as bcrypt from "bcrypt";
 import * as env from "dotenv";
 env.config();
-const { pepper, saltRounds } = process.env;
+const { PEPPER, SALT_ROUNDS } = process.env;
+
 createProduct(dataProduct());
-createUser(dataUser());
+createUser(dataUser())
+.then(()=>{
+  createOrder(dataOrder());
+});
+
 async function createProduct(p: Product[]) {
   try {
     const conn = await Client.connect();
@@ -28,8 +33,8 @@ async function createUser(p: User[]) {
     for (let i = 0; i < p.length; i++) {
       let pIndex = p[i];
       pIndex.password = bcrypt.hashSync(
-        pIndex.password + pepper,
-        parseInt(saltRounds!)
+        pIndex.password + PEPPER,
+        parseInt(SALT_ROUNDS!)
       );
       let data = Object.values(pIndex);
       const sql = createSqlUser(pIndex);
@@ -37,7 +42,22 @@ async function createUser(p: User[]) {
     }
     conn.release();
   } catch (err) {
-    throw new Error(`Could not add new Products . Error: ${err}`);
+    throw new Error(`Could not add new Products .  ${err}`);
+  }
+}
+async function createOrder(p: Order[]) {
+  try {
+    const conn = await Client.connect();
+    let result;
+    for (let i = 0; i < p.length; i++) {
+      let pIndex = p[i];
+      let data = Object.values(pIndex);
+      const sql = createSqlOrder(pIndex);
+      result = await conn.query(sql, data);
+    }
+    conn.release();
+  } catch (err) {
+    throw new Error(`Could not add new Products .  ${err}`);
   }
 }
 function dataUser(): User[] {
@@ -482,7 +502,112 @@ function dataProduct(): Product[] {
     }
   ];
 }
-
+function dataOrder(): any[] {
+  return [
+    {
+      "products_id" :[8,15],
+      "user_id" :1,
+      "stutas" :false,
+      "orderDate": "22/05/2023",
+    },
+    {
+      "products_id" :[8,7],
+      "user_id" :2,
+      "stutas" :true,
+      "orderDate": "28/06/2022",
+    },
+    {
+      "products_id" :[6,4],
+      "user_id" :3,
+      "stutas" :true,
+      "orderDate": "20/12/2022",
+    },
+    {
+      "products_id" :[8,15],
+      "user_id" :3,
+      "stutas" :false,
+      "orderDate": "31/07/2022",
+    },
+    {
+      "products_id" :[16,12],
+      "user_id" :4,
+      "stutas" :false,
+      "orderDate": "28/09/2022",
+    },
+    {
+      "products_id" :[9,10],
+      "user_id" :8,
+      "stutas" :true,
+      "orderDate": "27/09/2023",
+    },
+    {
+      "products_id" :[2,9],
+      "user_id" :1,
+      "stutas" :true,
+      "orderDate": "07/12/2023",
+    },
+    {
+      "products_id" :[8,12],
+      "user_id" :7,
+      "stutas" :false,
+      "orderDate":  "29/04/2022",
+    },
+    {
+      "products_id" :[14,17],
+      "user_id" :6,
+      "stutas" :false,
+      "orderDate": "03/02/2023",
+    },
+    {
+      "products_id" :[12,5],
+      "user_id" :3,
+      "stutas" :true,
+      "orderDate": "25/01/2024",
+    },
+    {
+      "products_id" :[21,17],
+      "user_id" :9,
+      "stutas" :true,
+      "orderDate": "28/07/2022",
+    },
+    {
+      "products_id" :[20,4],
+      "user_id" :8,
+      "stutas" :true,
+      "orderDate": "13/03/2023",
+    },
+    {
+      "products_id" :[16,12],
+      "user_id" :5,
+      "stutas" :true,
+      "orderDate": "02/08/2022",
+    },
+    {
+      "products_id" :[14,13],
+      "user_id" :8,
+      "stutas" :false,
+      "orderDate": "03/10/2023",
+    },
+    {
+      "products_id" :[14,17],
+      "user_id" :4,
+      "stutas" :true,
+      "orderDate":  "06/03/2023",
+    },
+    {
+      "products_id" :[15,17],
+      "user_id" :3,
+      "stutas" :true,
+      "orderDate": "07/02/2024",
+    },
+    {
+      "products_id" :[1,3],
+      "user_id" :1,
+      "stutas" :false,
+      "orderDate": "24/08/2023",
+    },
+  ]
+}
 function createSqlProduct(cols: Product) {
   let len = Object.keys(cols).length;
   var query = ["INSERT INTO products("];
@@ -509,6 +634,29 @@ function createSqlProduct(cols: Product) {
 function createSqlUser(cols: User) {
   let len = Object.keys(cols).length;
   var query = ["INSERT INTO users("];
+  var set = [];
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(key + ",");
+    } else {
+      set.push(key);
+    }
+  });
+  set.push(") VALUES(");
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(`$${i + 1},`);
+    } else {
+      set.push(`$${i + 1}`);
+    }
+  });
+  set.push(") RETURNING *");
+  query.push(set.join(" "));
+  return query.join(" ");
+}
+function createSqlOrder(cols: Order) {
+  let len = Object.keys(cols).length;
+  var query = ["INSERT INTO orders("];
   var set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {

@@ -2,7 +2,12 @@
 CREATE TABLE orders(
   id SERIAL PRIMARY KEY,
   products_id INT[] NOT NULL,
-  user_id INT REFERENCES users (id) NOT NULL,
   stutas BOOLEAN NOT NULL,
-  orderDate DATE
+  orderDate DATE NOT NULL,
+  user_id INT NOT NULL,
+  CONSTRAINT fk_orders_users
+        FOREIGN KEY (user_id)
+            REFERENCES users(id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
 );

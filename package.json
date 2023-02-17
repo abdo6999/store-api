@@ -6,11 +6,11 @@
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
-    "build": "npx tsc",
-    "jasmine": "jasmine ",
-    "test": "npm run build && npm run jasmine",
-    "start": "nodemon src/server.ts ",
-    "seed": "ts-node src/models/seed.ts "
+    "build": "set NODE_ENV_DEV=dev &&  npx tsc",
+    "jasmine": "jasmine",
+    "test": " set NODE_ENV_TEST=test && npx tsc && db-migrate --env test up &&  jasmine ",
+    "start": " nodemon src/server.ts ",
+    "seed": "set NODE_ENV_TEST=test && ts-node src/helpers/seed.ts "
   },
   "eslintIgnore": [
     "tests"

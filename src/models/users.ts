@@ -1,6 +1,6 @@
 import Client from "../database";
-import { User } from "./models";
-import hashpass  from "../helpers/hashpassword";
+import { User } from "../helpers/models";
+import hashpass from "../helpers/hashpassword";
 import jwtToken from "../helpers/jwt";
 export class UserTable {
   async index(): Promise<User[]> {
@@ -21,7 +21,7 @@ export class UserTable {
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find users ${id}. Error: ${err}`);
+      throw new Error(`Could not find users ${id}.  ${err}`);
     }
   }
   async create(u: User): Promise<object> {
@@ -31,12 +31,12 @@ export class UserTable {
       let data = Object.values(u);
       const sql = createUser(u);
       const result = await conn.query(sql, data);
-      const userToken = jwtToken.sign({username: u.username});
-      const userRefreshToken = jwtToken.signRefresh({username: u.username});
+      const userToken = jwtToken.sign({ username: u.username });
+      const userRefreshToken = jwtToken.signRefresh({ username: u.username });
       conn.release();
-      return { accessToken: userToken , refreshToken: userRefreshToken };
+      return { accessToken: userToken, refreshToken: userRefreshToken };
     } catch (err) {
-      throw new Error(`Could not add new user ${u.firstName}. Error: ${err}`);
+      throw new Error(`Could not add new user ${u.firstName}. ${err}`);
     }
   }
   async update(p: Partial<User>, id: number): Promise<User> {
@@ -60,8 +60,11 @@ export class UserTable {
       const resualt = await conn.query(sql, [username]);
       if (resualt.rows.length) {
         const user = resualt.rows[0];
-        if (hashpass.compare(password,user.password)) {
-          return { accessToken: jwtToken.sign({username: user.username}),refreshToken: jwtToken.signRefresh({username: user.username}) };
+        if (hashpass.compare(password, user.password)) {
+          return {
+            accessToken: jwtToken.sign({ username: user.username }),
+            refreshToken: jwtToken.signRefresh({ username: user.username })
+          };
         }
       }
       return null;
@@ -110,7 +113,6 @@ function updateUserByID(cols: Partial<User>, id: number) {
       element += ",";
     }
   }
-  console.log(element);
   query.push("WHERE id = " + id + "RETURNING " + element);
   return query.join(" ");
 }
