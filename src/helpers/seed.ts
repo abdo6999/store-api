@@ -4,22 +4,20 @@ import * as bcrypt from "bcrypt";
 import * as env from "dotenv";
 env.config();
 const { PEPPER, SALT_ROUNDS } = process.env;
-
 createProduct(dataProduct());
-createUser(dataUser())
-.then(()=>{
+
+createUser(dataUser()).then(() => {
   createOrder(dataOrder());
 });
 
 async function createProduct(p: Product[]) {
   try {
     const conn = await Client.connect();
-    let result;
     for (let i = 0; i < p.length; i++) {
-      let pIndex = p[i];
+      const pIndex = p[i];
       const sql = createSqlProduct(pIndex);
-      let data = Object.values(pIndex);
-      result = await conn.query(sql, data);
+      const data = Object.values(pIndex);
+      await conn.query(sql, data);
     }
     conn.release();
   } catch (err) {
@@ -29,16 +27,17 @@ async function createProduct(p: Product[]) {
 async function createUser(p: User[]) {
   try {
     const conn = await Client.connect();
-    let result;
     for (let i = 0; i < p.length; i++) {
-      let pIndex = p[i];
-      pIndex.password = bcrypt.hashSync(
-        pIndex.password + PEPPER,
-        parseInt(SALT_ROUNDS!)
-      );
-      let data = Object.values(pIndex);
+      const pIndex = p[i];
+      if (SALT_ROUNDS) {
+        pIndex.password = bcrypt.hashSync(
+          pIndex.password + PEPPER,
+          parseInt(SALT_ROUNDS)
+        );
+      }
+      const data = Object.values(pIndex);
       const sql = createSqlUser(pIndex);
-      result = await conn.query(sql, data);
+      await conn.query(sql, data);
     }
     conn.release();
   } catch (err) {
@@ -48,12 +47,12 @@ async function createUser(p: User[]) {
 async function createOrder(p: Order[]) {
   try {
     const conn = await Client.connect();
-    let result;
     for (let i = 0; i < p.length; i++) {
-      let pIndex = p[i];
-      let data = Object.values(pIndex);
+      const pIndex = p[i];
+      pIndex.cart = JSON.stringify(pIndex.cart);
+      const data = Object.values(pIndex);
       const sql = createSqlOrder(pIndex);
-      result = await conn.query(sql, data);
+      await conn.query(sql, data);
     }
     conn.release();
   } catch (err) {
@@ -502,116 +501,552 @@ function dataProduct(): Product[] {
     }
   ];
 }
-function dataOrder(): any[] {
+function dataOrder(): Order[] {
   return [
     {
-      "products_id" :[8,15],
-      "user_id" :1,
-      "stutas" :false,
-      "orderDate": "22/05/2023",
+      cart: [
+        {
+          product_id: 59,
+          quantity: 3
+        },
+        {
+          product_id: 88,
+          quantity: 2
+        },
+        {
+          product_id: 18,
+          quantity: 2
+        },
+        {
+          product_id: 95,
+          quantity: 1
+        },
+        {
+          product_id: 39,
+          quantity: 2
+        }
+      ],
+      user_id: 1,
+      stutas: false,
+      orderDate: "22/05/2023"
     },
     {
-      "products_id" :[8,7],
-      "user_id" :2,
-      "stutas" :true,
-      "orderDate": "28/06/2022",
+      cart: [
+        {
+          product_id: 96,
+
+          quantity: 2
+        },
+        {
+          product_id: 91,
+
+          quantity: 3
+        },
+        {
+          product_id: 9,
+
+          quantity: 1
+        },
+        {
+          product_id: 16,
+
+          quantity: 1
+        },
+        {
+          product_id: 54,
+
+          quantity: 3
+        }
+      ],
+      user_id: 2,
+      stutas: true,
+      orderDate: "28/06/2022"
     },
     {
-      "products_id" :[6,4],
-      "user_id" :3,
-      "stutas" :true,
-      "orderDate": "20/12/2022",
+      cart: [
+        {
+          product_id: 37,
+
+          quantity: 2
+        },
+        {
+          product_id: 80,
+
+          quantity: 3
+        },
+        {
+          product_id: 68,
+
+          quantity: 3
+        },
+        {
+          product_id: 81,
+
+          quantity: 1
+        },
+        {
+          product_id: 90,
+
+          quantity: 1
+        }
+      ],
+      user_id: 3,
+      stutas: true,
+      orderDate: "20/12/2022"
     },
     {
-      "products_id" :[8,15],
-      "user_id" :3,
-      "stutas" :false,
-      "orderDate": "31/07/2022",
+      cart: [
+        {
+          product_id: 36,
+
+          quantity: 1
+        },
+        {
+          product_id: 54,
+
+          quantity: 1
+        },
+        {
+          product_id: 11,
+
+          quantity: 3
+        },
+        {
+          product_id: 47,
+
+          quantity: 2
+        },
+        {
+          product_id: 64,
+
+          quantity: 3
+        }
+      ],
+      user_id: 3,
+      stutas: false,
+      orderDate: "31/07/2022"
     },
     {
-      "products_id" :[16,12],
-      "user_id" :4,
-      "stutas" :false,
-      "orderDate": "28/09/2022",
+      cart: [
+        {
+          product_id: 23,
+
+          quantity: 3
+        },
+        {
+          product_id: 91,
+
+          quantity: 1
+        },
+        {
+          product_id: 45,
+
+          quantity: 2
+        },
+        {
+          product_id: 84,
+
+          quantity: 1
+        },
+        {
+          product_id: 70,
+
+          quantity: 3
+        }
+      ],
+      user_id: 4,
+      stutas: false,
+      orderDate: "28/09/2022"
     },
     {
-      "products_id" :[9,10],
-      "user_id" :8,
-      "stutas" :true,
-      "orderDate": "27/09/2023",
+      cart: [
+        {
+          product_id: 53,
+
+          quantity: 3
+        },
+        {
+          product_id: 61,
+
+          quantity: 2
+        },
+        {
+          product_id: 92,
+
+          quantity: 1
+        },
+        {
+          product_id: 11,
+
+          quantity: 3
+        },
+        {
+          product_id: 37,
+
+          quantity: 3
+        }
+      ],
+      user_id: 8,
+      stutas: true,
+      orderDate: "27/09/2023"
     },
     {
-      "products_id" :[2,9],
-      "user_id" :1,
-      "stutas" :true,
-      "orderDate": "07/12/2023",
+      cart: [
+        {
+          product_id: 61,
+
+          quantity: 1
+        },
+        {
+          product_id: 80,
+
+          quantity: 2
+        },
+        {
+          product_id: 99,
+
+          quantity: 3
+        },
+        {
+          product_id: 14,
+
+          quantity: 1
+        },
+        {
+          product_id: 48,
+
+          quantity: 3
+        }
+      ],
+      user_id: 1,
+      stutas: true,
+      orderDate: "07/12/2023"
     },
     {
-      "products_id" :[8,12],
-      "user_id" :7,
-      "stutas" :false,
-      "orderDate":  "29/04/2022",
+      cart: [
+        {
+          product_id: 45,
+
+          quantity: 1
+        },
+        {
+          product_id: 83,
+
+          quantity: 3
+        },
+        {
+          product_id: 96,
+
+          quantity: 1
+        },
+        {
+          product_id: 21,
+          quantity: 3
+        },
+        {
+          product_id: 2,
+
+          quantity: 1
+        }
+      ],
+      user_id: 7,
+      stutas: false,
+      orderDate: "29/04/2022"
     },
     {
-      "products_id" :[14,17],
-      "user_id" :6,
-      "stutas" :false,
-      "orderDate": "03/02/2023",
+      cart: [
+        {
+          product_id: 74,
+
+          quantity: 3
+        },
+        {
+          product_id: 10,
+
+          quantity: 3
+        },
+        {
+          product_id: 19,
+
+          quantity: 2
+        },
+        {
+          product_id: 53,
+
+          quantity: 1
+        },
+        {
+          product_id: 13,
+
+          quantity: 1
+        }
+      ],
+      user_id: 6,
+      stutas: false,
+      orderDate: "03/02/2023"
     },
     {
-      "products_id" :[12,5],
-      "user_id" :3,
-      "stutas" :true,
-      "orderDate": "25/01/2024",
+      cart: [
+        {
+          product_id: 75,
+
+          quantity: 1
+        },
+        {
+          product_id: 39,
+
+          quantity: 1
+        },
+        {
+          product_id: 3,
+
+          quantity: 3
+        },
+        {
+          product_id: 7,
+
+          quantity: 1
+        },
+        {
+          product_id: 93,
+
+          quantity: 3
+        }
+      ],
+      user_id: 3,
+      stutas: true,
+      orderDate: "25/01/2024"
     },
     {
-      "products_id" :[21,17],
-      "user_id" :9,
-      "stutas" :true,
-      "orderDate": "28/07/2022",
+      cart: [
+        {
+          product_id: 71,
+
+          quantity: 3
+        },
+        {
+          product_id: 25,
+
+          quantity: 2
+        },
+        {
+          product_id: 65,
+
+          quantity: 3
+        },
+        {
+          product_id: 58,
+
+          quantity: 1
+        },
+        {
+          product_id: 53,
+
+          quantity: 3
+        }
+      ],
+      user_id: 9,
+      stutas: true,
+      orderDate: "28/07/2022"
     },
     {
-      "products_id" :[20,4],
-      "user_id" :8,
-      "stutas" :true,
-      "orderDate": "13/03/2023",
+      cart: [
+        {
+          product_id: 32,
+
+          quantity: 2
+        },
+        {
+          product_id: 41,
+
+          quantity: 3
+        },
+        {
+          product_id: 69,
+
+          quantity: 1
+        },
+        {
+          product_id: 98,
+
+          quantity: 3
+        },
+        {
+          product_id: 67,
+
+          quantity: 2
+        }
+      ],
+      user_id: 8,
+      stutas: true,
+      orderDate: "13/03/2023"
     },
     {
-      "products_id" :[16,12],
-      "user_id" :5,
-      "stutas" :true,
-      "orderDate": "02/08/2022",
+      cart: [
+        {
+          product_id: 81,
+
+          quantity: 1
+        },
+        {
+          product_id: 42,
+
+          quantity: 2
+        },
+        {
+          product_id: 29,
+
+          quantity: 3
+        },
+        {
+          product_id: 64,
+
+          quantity: 2
+        },
+        {
+          product_id: 54,
+
+          quantity: 1
+        }
+      ],
+      user_id: 5,
+      stutas: true,
+      orderDate: "02/08/2022"
     },
     {
-      "products_id" :[14,13],
-      "user_id" :8,
-      "stutas" :false,
-      "orderDate": "03/10/2023",
+      cart: [
+        {
+          product_id: 64,
+
+          quantity: 2
+        },
+        {
+          product_id: 76,
+
+          quantity: 2
+        },
+        {
+          product_id: 30,
+
+          quantity: 2
+        },
+        {
+          product_id: 88,
+
+          quantity: 1
+        },
+        {
+          product_id: 94,
+
+          quantity: 2
+        }
+      ],
+      user_id: 8,
+      stutas: false,
+      orderDate: "03/10/2023"
     },
     {
-      "products_id" :[14,17],
-      "user_id" :4,
-      "stutas" :true,
-      "orderDate":  "06/03/2023",
+      cart: [
+        {
+          product_id: 4,
+
+          quantity: 1
+        },
+        {
+          product_id: 100,
+
+          quantity: 3
+        },
+        {
+          product_id: 1,
+
+          quantity: 2
+        },
+        {
+          product_id: 48,
+
+          quantity: 3
+        },
+        {
+          product_id: 94,
+
+          quantity: 3
+        }
+      ],
+      user_id: 4,
+      stutas: true,
+      orderDate: "06/03/2023"
     },
     {
-      "products_id" :[15,17],
-      "user_id" :3,
-      "stutas" :true,
-      "orderDate": "07/02/2024",
+      cart: [
+        {
+          product_id: 3,
+
+          quantity: 3
+        },
+        {
+          product_id: 50,
+
+          quantity: 3
+        },
+        {
+          product_id: 67,
+
+          quantity: 2
+        },
+        {
+          product_id: 86,
+
+          quantity: 1
+        },
+        {
+          product_id: 12,
+
+          quantity: 1
+        }
+      ],
+      user_id: 3,
+      stutas: true,
+      orderDate: "07/02/2024"
     },
     {
-      "products_id" :[1,3],
-      "user_id" :1,
-      "stutas" :false,
-      "orderDate": "24/08/2023",
-    },
-  ]
+      cart: [
+        {
+          product_id: 12,
+
+          quantity: 3
+        },
+        {
+          product_id: 25,
+
+          quantity: 1
+        },
+        {
+          product_id: 24,
+
+          quantity: 2
+        },
+        {
+          product_id: 90,
+
+          quantity: 1
+        },
+        {
+          product_id: 97,
+
+          quantity: 1
+        }
+      ],
+      user_id: 1,
+      stutas: false,
+      orderDate: "24/08/2023"
+    }
+  ];
 }
 function createSqlProduct(cols: Product) {
-  let len = Object.keys(cols).length;
-  var query = ["INSERT INTO products("];
-  var set = [];
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO products("];
+  const set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {
       set.push(key + ",");
@@ -632,9 +1067,9 @@ function createSqlProduct(cols: Product) {
   return query.join(" ");
 }
 function createSqlUser(cols: User) {
-  let len = Object.keys(cols).length;
-  var query = ["INSERT INTO users("];
-  var set = [];
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO users("];
+  const set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {
       set.push(key + ",");
@@ -655,9 +1090,9 @@ function createSqlUser(cols: User) {
   return query.join(" ");
 }
 function createSqlOrder(cols: Order) {
-  let len = Object.keys(cols).length;
-  var query = ["INSERT INTO orders("];
-  var set = [];
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO orders("];
+  const set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {
       set.push(key + ",");

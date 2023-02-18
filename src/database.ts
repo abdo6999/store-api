@@ -7,7 +7,7 @@ const {
   POSTGRES_USER,
   POSTGRES_PASSWORD,
   POSTGRES_TEST_DB,
-  NODE_ENV_TEST,
+  NODE_ENV_TEST
 } = process.env;
 let Client: Pool;
 if (NODE_ENV_TEST) {

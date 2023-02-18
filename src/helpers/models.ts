@@ -63,23 +63,30 @@ class User {
 
 class Order {
   id?: number;
-  products_id!: number[];
+  cart!: Cart[] | string;
   user_id!: number;
-  stutas!: Boolean;
+  stutas!: boolean;
   orderDate!: string;
-
   constructor(
     id: number,
-    products_id: number[],
+    cart: Cart[] | string,
     user_id: number,
-    stutas: Boolean,
+    stutas: boolean,
     orderDate: string
   ) {
     this.id = id;
-    this.products_id = products_id;
+    this.cart = cart;
     this.user_id = user_id;
     this.stutas = stutas;
     this.orderDate = orderDate;
+  }
+}
+class Cart {
+  product_id!: number;
+  quantity!: number;
+  constructor(product_id: number, quantity: number) {
+    this.product_id = product_id;
+    this.quantity = quantity;
   }
 }
 export { Product, User, Order };

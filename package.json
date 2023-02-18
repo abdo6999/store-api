@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
-    "build": "set NODE_ENV_DEV=dev &&  npx tsc",
+    "build": " npx tsc",
     "jasmine": "jasmine",
     "test": " set NODE_ENV_TEST=test && npx tsc && db-migrate --env test up &&  jasmine ",
     "start": " nodemon src/server.ts ",

@@ -8,10 +8,12 @@ describe("Test user responses", () => {
     expect(response.status).toBe(401);
   });
   it("get get-users with authorized endpoint to be 200", async () => {
-    const response = await request.get("/get-users").set(
-      "Authorization",
-      "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M"
-    );
+    const response = await request
+      .get("/get-users")
+      .set(
+        "Authorization",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M"
+      );
     expect(response.status).toBe(200);
   });
   it("get show-user with Unauthorized and  invalid query endpoint to be 401", async () => {
@@ -38,23 +40,21 @@ describe("Test user responses", () => {
     });
     expect(response.status).toBe(200);
   });
-  
+
   it("post create-user with authorized and unvalid body  endpoint to be 400", async () => {
-    const response = await request
-      .post("/create-user")
-      .send({
-        lastName: "Reichert",
-        gender: "female",
-        username: "jtrdddeffffleven5",
-        password: "fghghfdh"
-      })
+    const response = await request.post("/create-user").send({
+      lastName: "Reichert",
+      gender: "female",
+      username: "jtrdddeffffleven5",
+      password: "fghghfdh"
+    });
     expect(response.status).toBe(400);
   });
   it("patch update-user with Unauthorized  and  valid body endpoint to be 401", async () => {
     const response = await request.patch("/update-user/4").send({
       firstName: "Alison",
       lastName: "Reichert",
-      gender: "female",
+      gender: "female"
     });
     expect(response.status).toBe(401);
   });
@@ -64,7 +64,7 @@ describe("Test user responses", () => {
       .send({
         firstName: "Alison",
         lastName: "Reichert",
-        gender: "female",
+        gender: "female"
       })
       .set(
         "Authorization",

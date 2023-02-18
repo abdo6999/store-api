@@ -40,11 +40,11 @@ class ProductTable {
             }
         });
     }
-    create(p) {
+    add(p) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                let data = Object.values(p);
+                const data = Object.values(p);
                 const sql = createProduct(p);
                 const result = yield conn.query(sql, data);
                 const product = result.rows[0];
@@ -60,7 +60,7 @@ class ProductTable {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                let data = Object.values(p);
+                const data = Object.values(p);
                 const sql = updateProductByID(p, id);
                 const resualt = yield conn.query(sql, data);
                 conn.release();
@@ -102,15 +102,15 @@ class ProductTable {
 } // end of class
 exports.ProductTable = ProductTable;
 function updateProductByID(cols, id) {
-    var query = ["UPDATE products"];
+    const query = ["UPDATE products"];
     query.push("SET");
-    var set = [];
+    const set = [];
     Object.keys(cols).forEach(function (key, i) {
         set.push(key + " = ($" + (i + 1) + ")");
     });
     query.push(set.join(", "));
-    let reg = /^([\w\-]+)/;
-    let updatValus = set.map(a => a.match(reg)[0]);
+    const reg = /^([\w]+)/;
+    const updatValus = set.map(a => a.match(reg)[0]);
     let element = "";
     for (let i = 0; i < updatValus.length; i++) {
         element += updatValus[i];
@@ -122,9 +122,9 @@ function updateProductByID(cols, id) {
     return query.join(" ");
 }
 function createProduct(cols) {
-    let len = Object.keys(cols).length;
-    var query = ["INSERT INTO products("];
-    var set = [];
+    const len = Object.keys(cols).length;
+    const query = ["INSERT INTO products("];
+    const set = [];
     Object.keys(cols).forEach(function (key, i) {
         if (i < len - 1) {
             set.push(key + ",");

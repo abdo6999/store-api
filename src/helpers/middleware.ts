@@ -14,8 +14,12 @@ export const authenticateToken = (
   const token = autheHeader?.split(" ")[1];
   if (token == null || token == undefined)
     return res.status(401).send("token rquiered");
-  jwt.verify(token!, ACCESS_TOKEN_SECRET!, (err, users) => {
-    if (err) return res.status(401).send(`${err}`);
-    next();
-  });
+  if (ACCESS_TOKEN_SECRET) {
+    jwt.verify(token, ACCESS_TOKEN_SECRET, err => {
+      if (err) return res.status(401).send(`${err}`);
+      next();
+    });
+  } else {
+    throw new Error("REFRESH_TOKEN_SECRET is null");
+  }
 };

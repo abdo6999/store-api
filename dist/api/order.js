@@ -13,12 +13,12 @@ const orders_1 = require("./../models/orders");
 const middleware_1 = require("../helpers/middleware");
 const order = (app) => {
     app.get("/get-orders", getOrders);
-    app.get("/show-order/:id", showOrders);
-    app.post("/create-order", middleware_1.authenticateToken, createOrders);
-    app.patch("/update-order/:id", middleware_1.authenticateToken, updateOrders);
-    app.delete("/delete-order/:id", middleware_1.authenticateToken, deleteOrders);
+    app.get("/show-order/:id", showOrder);
+    app.post("/create-order", middleware_1.authenticateToken, addOrder);
+    app.patch("/update-order/:id", middleware_1.authenticateToken, updateOrder);
+    app.delete("/delete-order/:id", middleware_1.authenticateToken, deleteOrder);
 };
-let orderTable = new orders_1.OrderTable();
+const orderTable = new orders_1.OrderTable();
 const getOrders = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield orderTable.index();
@@ -28,17 +28,17 @@ const getOrders = (_req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(500).send(`cannot get orders ${error}`);
     }
 });
-const createOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const orders = yield orderTable.create(data);
+        const orders = yield orderTable.add(data);
         res.status(200).json(orders);
     }
     catch (error) {
         res.status(400).send(`bad request create orders ${error}`);
     }
 });
-const showOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const showOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield orderTable.show(parseInt(req.params.id));
         if (orders == undefined) {
@@ -50,9 +50,9 @@ const showOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(404).send(`the id not exist in order ${error}`);
     }
 });
-const updateOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = Object.assign({}, req.body);
     try {
-        const data = Object.assign({}, req.body);
         const orders = yield orderTable.update(data, parseInt(req.params.id));
         res.json(orders);
     }
@@ -60,7 +60,7 @@ const updateOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(404).send(`cannot update order ${error}`);
     }
 });
-const deleteOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const orders = yield orderTable.delete(parseInt(req.params.id));
         res.json(orders);

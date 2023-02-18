@@ -29,12 +29,18 @@ class User {
 }
 exports.User = User;
 class Order {
-    constructor(id, products_id, user_id, stutas, orderDate) {
+    constructor(id, cart, user_id, stutas, orderDate) {
         this.id = id;
-        this.products_id = products_id;
+        this.cart = cart;
         this.user_id = user_id;
         this.stutas = stutas;
         this.orderDate = orderDate;
     }
 }
 exports.Order = Order;
+class Cart {
+    constructor(product_id, quantity) {
+        this.product_id = product_id;
+        this.quantity = quantity;
+    }
+}

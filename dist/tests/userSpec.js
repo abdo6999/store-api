@@ -18,7 +18,9 @@ describe("Test user responses", () => {
         expect(response.status).toBe(401);
     }));
     it("get get-users with authorized endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get("/get-users").set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+        const response = yield request
+            .get("/get-users")
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
         expect(response.status).toBe(200);
     }));
     it("get show-user with Unauthorized and  invalid query endpoint to be 401", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,9 +45,7 @@ describe("Test user responses", () => {
         expect(response.status).toBe(200);
     }));
     it("post create-user with authorized and unvalid body  endpoint to be 400", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .post("/create-user")
-            .send({
+        const response = yield request.post("/create-user").send({
             lastName: "Reichert",
             gender: "female",
             username: "jtrdddeffffleven5",
@@ -57,7 +57,7 @@ describe("Test user responses", () => {
         const response = yield request.patch("/update-user/4").send({
             firstName: "Alison",
             lastName: "Reichert",
-            gender: "female",
+            gender: "female"
         });
         expect(response.status).toBe(401);
     }));
@@ -67,7 +67,7 @@ describe("Test user responses", () => {
             .send({
             firstName: "Alison",
             lastName: "Reichert",
-            gender: "female",
+            gender: "female"
         })
             .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
         expect(response.status).toBe(200);

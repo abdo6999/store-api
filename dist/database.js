@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const env = require("dotenv");
 const pg_1 = require("pg");
 env.config({ override: true });
-const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_TEST_DB, NODE_ENV_TEST, } = process.env;
+const { POSTGRES_HOST, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_TEST_DB, NODE_ENV_TEST } = process.env;
 let Client;
 if (NODE_ENV_TEST) {
     Client = new pg_1.Pool({

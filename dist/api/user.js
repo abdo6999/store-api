@@ -14,14 +14,14 @@ const users_1 = require("./../models/users");
 const middleware_1 = require("../helpers/middleware");
 const user = (app) => {
     app.get("/get-users", middleware_1.authenticateToken, getUsers);
-    app.get("/show-user/:id", middleware_1.authenticateToken, showUsers);
-    app.post("/create-user", createUsers);
+    app.get("/show-user/:id", middleware_1.authenticateToken, showUser);
+    app.post("/create-user", createUser);
     app.post("/refresh-token", refreshToken);
-    app.patch("/update-user/:id", middleware_1.authenticateToken, updateUsers);
-    app.delete("/delete-user/:id", middleware_1.authenticateToken, deleteUsers);
+    app.patch("/update-user/:id", middleware_1.authenticateToken, updateUser);
+    app.delete("/delete-user/:id", middleware_1.authenticateToken, deleteUser);
     app.post("/authenticate-user", authenticateUser);
 };
-let userTable = new users_1.UserTable();
+const userTable = new users_1.UserTable();
 const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield userTable.index();
@@ -31,7 +31,7 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(500).send(`cannot get users ${error}`);
     }
 });
-const createUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
         const users = yield userTable.create(data);
@@ -41,7 +41,7 @@ const createUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(400).send(`bad request create orders ${error}`);
     }
 });
-const showUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const showUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield userTable.show(parseInt(req.params.id));
         if (users == undefined) {
@@ -53,7 +53,7 @@ const showUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(404).send(`the id not exist in user ${error}`);
     }
 });
-const updateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = Object.assign({}, req.body);
         const users = yield userTable.update(data, parseInt(req.params.id));
@@ -63,7 +63,7 @@ const updateUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.status(500).send(`cannot update user ${error}`);
     }
 });
-const deleteUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const users = yield userTable.delete(req.body.id);
         res.json(users);

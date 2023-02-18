@@ -46,9 +46,9 @@ class UserTable {
             try {
                 const conn = yield database_1.default.connect();
                 u.password = hashpassword_1.default.hash(u.password);
-                let data = Object.values(u);
+                const data = Object.values(u);
                 const sql = createUser(u);
-                const result = yield conn.query(sql, data);
+                yield conn.query(sql, data);
                 const userToken = jwt_1.default.sign({ username: u.username });
                 const userRefreshToken = jwt_1.default.signRefresh({ username: u.username });
                 conn.release();
@@ -59,12 +59,12 @@ class UserTable {
             }
         });
     }
-    update(p, id) {
+    update(u, id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = updateUserByID(p, id);
-                let data = Object.values(p);
+                const sql = updateUserByID(u, id);
+                const data = Object.values(u);
                 const resualt = yield conn.query(sql, data);
                 return resualt.rows[0];
             }
@@ -125,15 +125,15 @@ class UserTable {
 } // user end
 exports.UserTable = UserTable;
 function updateUserByID(cols, id) {
-    var query = ["UPDATE users"];
+    const query = ["UPDATE users"];
     query.push(" SET");
-    var set = [];
+    const set = [];
     Object.keys(cols).forEach(function (key, i) {
         set.push(key + " = ($" + (i + 1) + ")");
     });
     query.push(set.join(", "));
-    let reg = /^([\w\-]+)/;
-    let updatValus = set.map(a => a.match(reg)[0]);
+    const reg = /^([\w]+)/;
+    const updatValus = set.map(a => a.match(reg)[0]);
     let element = "";
     for (let i = 0; i < updatValus.length; i++) {
         element += updatValus[i];
@@ -145,9 +145,9 @@ function updateUserByID(cols, id) {
     return query.join(" ");
 }
 function createUser(cols) {
-    let len = Object.keys(cols).length;
-    var query = ["INSERT INTO users("];
-    var set = [];
+    const len = Object.keys(cols).length;
+    const query = ["INSERT INTO users("];
+    const set = [];
     Object.keys(cols).forEach(function (key, i) {
         if (i < len - 1) {
             set.push(key + ",");

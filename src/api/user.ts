@@ -1,19 +1,19 @@
 import jwtToken from "../helpers/jwt";
 import { UserTable } from "./../models/users";
-import { Request, Response, NextFunction } from "express";
+import { Request, Response } from "express";
 import * as express from "express";
 import { User } from "../helpers/models";
 import { authenticateToken } from "../helpers/middleware";
 const user = (app: express.Application) => {
   app.get("/get-users", authenticateToken, getUsers);
-  app.get("/show-user/:id", authenticateToken, showUsers);
-  app.post("/create-user", createUsers);
+  app.get("/show-user/:id", authenticateToken, showUser);
+  app.post("/create-user", createUser);
   app.post("/refresh-token", refreshToken);
-  app.patch("/update-user/:id", authenticateToken, updateUsers);
-  app.delete("/delete-user/:id", authenticateToken, deleteUsers);
+  app.patch("/update-user/:id", authenticateToken, updateUser);
+  app.delete("/delete-user/:id", authenticateToken, deleteUser);
   app.post("/authenticate-user", authenticateUser);
 };
-let userTable = new UserTable();
+const userTable = new UserTable();
 const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await userTable.index();
@@ -22,7 +22,7 @@ const getUsers = async (req: Request, res: Response) => {
     res.status(500).send(`cannot get users ${error}`);
   }
 };
-const createUsers = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response) => {
   const data: User = req.body;
   try {
     const users = await userTable.create(data);
@@ -31,10 +31,10 @@ const createUsers = async (req: Request, res: Response) => {
     res.status(400).send(`bad request create orders ${error}`);
   }
 };
-const showUsers = async (req: Request, res: Response) => {
+const showUser = async (req: Request, res: Response) => {
   try {
     const users = await userTable.show(parseInt(req.params.id));
-    if (users == undefined){
+    if (users == undefined) {
       res.status(404).send(`the id not exist in user `);
     }
     res.json(users);
@@ -42,7 +42,7 @@ const showUsers = async (req: Request, res: Response) => {
     res.status(404).send(`the id not exist in user ${error}`);
   }
 };
-const updateUsers = async (req: Request, res: Response) => {
+const updateUser = async (req: Request, res: Response) => {
   try {
     const data: Partial<User> = { ...req.body };
     const users = await userTable.update(data, parseInt(req.params.id));
@@ -51,7 +51,7 @@ const updateUsers = async (req: Request, res: Response) => {
     res.status(500).send(`cannot update user ${error}`);
   }
 };
-const deleteUsers = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response) => {
   try {
     const users = await userTable.delete(req.body.id);
     res.json(users);

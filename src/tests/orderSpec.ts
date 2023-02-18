@@ -28,7 +28,16 @@ describe("Test order responses", () => {
     const response = await request
       .post("/create-order")
       .send({
-        products_id: [8, 15],
+        cart: [
+          {
+            id: 59,
+            quantity: 3
+          },
+          {
+            id: 88,
+            quantity: 2
+          }
+        ],
         user_id: 5,
         stutas: false,
         orderDate: "23/06/2013"
@@ -44,7 +53,7 @@ describe("Test order responses", () => {
       .post("/create-order")
       .send({
         products_id: [8, 15],
-        user_id: 5,
+        user_id: 5
       })
       .set(
         "Authorization",

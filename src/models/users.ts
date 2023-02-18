@@ -28,9 +28,9 @@ export class UserTable {
     try {
       const conn = await Client.connect();
       u.password = hashpass.hash(u.password);
-      let data = Object.values(u);
+      const data = Object.values(u);
       const sql = createUser(u);
-      const result = await conn.query(sql, data);
+      await conn.query(sql, data);
       const userToken = jwtToken.sign({ username: u.username });
       const userRefreshToken = jwtToken.signRefresh({ username: u.username });
       conn.release();
@@ -39,11 +39,11 @@ export class UserTable {
       throw new Error(`Could not add new user ${u.firstName}. ${err}`);
     }
   }
-  async update(p: Partial<User>, id: number): Promise<User> {
+  async update(u: Partial<User>, id: number): Promise<User> {
     try {
       const conn = await Client.connect();
-      const sql = updateUserByID(p, id);
-      let data = Object.values(p);
+      const sql = updateUserByID(u, id);
+      const data = Object.values(u);
       const resualt = await conn.query(sql, data);
       return resualt.rows[0];
     } catch (error) {
@@ -96,16 +96,16 @@ export class UserTable {
 } // user end
 
 function updateUserByID(cols: Partial<User>, id: number) {
-  var query = ["UPDATE users"];
+  const query = ["UPDATE users"];
   query.push(" SET");
 
-  var set: string[] = [];
+  const set: string[] = [];
   Object.keys(cols).forEach(function(key, i) {
     set.push(key + " = ($" + (i + 1) + ")");
   });
   query.push(set.join(", "));
-  let reg = /^([\w\-]+)/;
-  let updatValus: string[] = set.map(a => a.match(reg)![0]);
+  const reg = /^([\w]+)/;
+  const updatValus: string[] = set.map(a => a.match(reg)![0]);
   let element = "";
   for (let i = 0; i < updatValus.length; i++) {
     element += updatValus[i];
@@ -118,9 +118,9 @@ function updateUserByID(cols: Partial<User>, id: number) {
 }
 
 function createUser(cols: User) {
-  let len = Object.keys(cols).length;
-  var query = ["INSERT INTO users("];
-  var set = [];
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO users("];
+  const set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {
       set.push(key + ",");

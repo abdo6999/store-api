@@ -38,7 +38,16 @@ describe("Test order responses", () => {
         const response = yield request
             .post("/create-order")
             .send({
-            products_id: [8, 15],
+            cart: [
+                {
+                    id: 59,
+                    quantity: 3
+                },
+                {
+                    id: 88,
+                    quantity: 2
+                }
+            ],
             user_id: 5,
             stutas: false,
             orderDate: "23/06/2013"
@@ -51,7 +60,7 @@ describe("Test order responses", () => {
             .post("/create-order")
             .send({
             products_id: [8, 15],
-            user_id: 5,
+            user_id: 5
         })
             .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
         expect(response.status).toBe(400);

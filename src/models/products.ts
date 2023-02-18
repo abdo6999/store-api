@@ -24,10 +24,10 @@ export class ProductTable {
       throw new Error(`Could not find products ${id}. ${err}`);
     }
   }
-  async create(p: Product): Promise<Product> {
+  async add(p: Product): Promise<Product> {
     try {
       const conn = await Client.connect();
-      let data = Object.values(p);
+      const data = Object.values(p);
       const sql = createProduct(p);
       const result = await conn.query(sql, data);
       const product = result.rows[0];
@@ -40,7 +40,7 @@ export class ProductTable {
   async update(p: Partial<Product>, id: number): Promise<Product> {
     try {
       const conn = await Client.connect();
-      let data = Object.values(p);
+      const data = Object.values(p);
       const sql = updateProductByID(p, id);
       const resualt = await conn.query(sql, data);
       conn.release();
@@ -74,15 +74,15 @@ export class ProductTable {
 } // end of class
 
 function updateProductByID(cols: Partial<Product>, id: number) {
-  var query = ["UPDATE products"];
+  const query = ["UPDATE products"];
   query.push("SET");
-  var set: string[] = [];
+  const set: string[] = [];
   Object.keys(cols).forEach(function(key, i) {
     set.push(key + " = ($" + (i + 1) + ")");
   });
   query.push(set.join(", "));
-  let reg = /^([\w\-]+)/;
-  let updatValus: string[] = set.map(a => a.match(reg)![0]);
+  const reg = /^([\w]+)/;
+  const updatValus: string[] = set.map(a => a.match(reg)![0]);
   let element = "";
   for (let i = 0; i < updatValus.length; i++) {
     element += updatValus[i];
@@ -95,9 +95,9 @@ function updateProductByID(cols: Partial<Product>, id: number) {
 }
 
 function createProduct(cols: Product) {
-  let len = Object.keys(cols).length;
-  var query = ["INSERT INTO products("];
-  var set = [];
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO products("];
+  const set = [];
   Object.keys(cols).forEach(function(key, i) {
     if (i < len - 1) {
       set.push(key + ",");

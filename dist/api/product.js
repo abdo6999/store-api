@@ -13,12 +13,12 @@ const products_1 = require("./../models/products");
 const middleware_1 = require("../helpers/middleware");
 const product = (app) => {
     app.get("/get-products", getProducts);
-    app.get("/show-product/:id", showProducts);
-    app.post("/create-product", middleware_1.authenticateToken, createProducts);
-    app.patch("/update-product/:id", middleware_1.authenticateToken, updateProducts);
-    app.delete("/delete-product/:id", middleware_1.authenticateToken, deleteProducts);
+    app.get("/show-product/:id", showProduct);
+    app.post("/create-product", middleware_1.authenticateToken, addProduct);
+    app.patch("/update-product/:id", middleware_1.authenticateToken, updateProduct);
+    app.delete("/delete-product/:id", middleware_1.authenticateToken, deleteProduct);
 };
-let productTable = new products_1.ProductTable();
+const productTable = new products_1.ProductTable();
 const getProducts = (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield productTable.index();
@@ -28,17 +28,17 @@ const getProducts = (_req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(500).send(`cannot get products ${error}`);
     }
 });
-const createProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     try {
-        const products = yield productTable.create(data);
+        const products = yield productTable.add(data);
         res.status(200).json(products);
     }
     catch (error) {
         res.status(400).send(`bad request create products ${error}`);
     }
 });
-const showProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const showProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield productTable.show(parseInt(req.params.id));
         if (products == undefined) {
@@ -50,7 +50,7 @@ const showProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         res.status(404).send(`the id not exist in product ${error}`);
     }
 });
-const updateProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const data = Object.assign({}, req.body);
         const products = yield productTable.update(data, parseInt(req.params.id));
@@ -60,7 +60,7 @@ const updateProducts = (req, res) => __awaiter(void 0, void 0, void 0, function*
         res.status(400).send(`cannot update product ${error}`);
     }
 });
-const deleteProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const products = yield productTable.delete(parseInt(req.params.id));
         res.json(products);
