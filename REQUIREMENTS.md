@@ -46,6 +46,8 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 - "/create-order" [token required] will create order if you enter valid body retarn the new order data
 
+- "/add-product/:id" [token required] will add product to cart if id is exist 
+
 - "/update-order/:id" [token required] will update order if id is exist retarn the updated data
 
 - "/delete-order/:id" [token required] will delete order if id is ex
@@ -85,7 +87,13 @@ if route not exist
 #### users
 
 - id: number
-- cart: Cart[] Cart{product_id,quantity}
+- cart: Cart[] Cart{}
 - user_id: number
 - stutas: boolean
 - orderDate: string
+
+#### cart
+- id
+- order_id
+- product_id
+- quantity

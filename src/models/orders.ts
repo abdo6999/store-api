@@ -1,5 +1,5 @@
 import Client from "../database";
-import { Order } from "../helpers/models";
+import { Cart, Order } from "../helpers/models";
 
 export class OrderTable {
   async index(): Promise<Order[]> {
@@ -71,6 +71,18 @@ export class OrderTable {
       throw new Error(`cannot connect with products ${error}`);
     }
   }
+  async addToCart(o: Cart): Promise<Cart> {
+    try {
+        const connection = await Client.connect()
+        const data = Object.values(o);
+        const sql = createCart(o);
+        const result = await connection.query(sql, data)
+        connection.release()
+        return result.rows[0]
+    } catch (err) {
+        throw new Error(`Could not add product. Error: ${err}`)
+    }
+}
 } // end of class
 
 function updateOrderByID(cols: Partial<Order>, id: number) {
@@ -83,7 +95,6 @@ function updateOrderByID(cols: Partial<Order>, id: number) {
   query.push(set.join(", "));
   const reg = /^([\w]+)/;
   const updatValus: string[] = set.map(a => a.match(reg)![0]);
-  console.log(updatValus);
   let element = "";
   for (let i = 0; i < updatValus.length; i++) {
     element += updatValus[i];
@@ -96,6 +107,29 @@ function updateOrderByID(cols: Partial<Order>, id: number) {
 }
 
 function createOrder(cols: Order) {
+  const len = Object.keys(cols).length;
+  const query = ["INSERT INTO orders("];
+  const set = [];
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(key + ",");
+    } else {
+      set.push(key);
+    }
+  });
+  set.push(") VALUES(");
+  Object.keys(cols).forEach(function(key, i) {
+    if (i < len - 1) {
+      set.push(`$${i + 1},`);
+    } else {
+      set.push(`$${i + 1}`);
+    }
+  });
+  set.push(") RETURNING *;");
+  query.push(set.join(" "));
+  return query.join(" ");
+}
+function createCart(cols: Cart) {
   const len = Object.keys(cols).length;
   const query = ["INSERT INTO orders("];
   const set = [];

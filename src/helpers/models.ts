@@ -63,19 +63,16 @@ class User {
 
 class Order {
   id?: number;
-  cart!: Cart[] | string;
   user_id!: number;
   stutas!: boolean;
   orderDate!: string;
   constructor(
     id: number,
-    cart: Cart[] | string,
     user_id: number,
     stutas: boolean,
     orderDate: string
   ) {
     this.id = id;
-    this.cart = cart;
     this.user_id = user_id;
     this.stutas = stutas;
     this.orderDate = orderDate;
@@ -84,9 +81,10 @@ class Order {
 class Cart {
   product_id!: number;
   quantity!: number;
+  order_id!: number;
   constructor(product_id: number, quantity: number) {
     this.product_id = product_id;
     this.quantity = quantity;
   }
 }
-export { Product, User, Order };
+export { Product, User, Order,Cart };

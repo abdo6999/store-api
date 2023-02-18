@@ -9,7 +9,16 @@ const app = express();
 const address = "4000";
 app.use(bodyParser.json());
 app.get("/", function (req, res) {
-    res.send(app._router.stack);
+    const array = app._router.stack;
+    const a = [];
+    for (let i = 0; i < array.length; i++) {
+        try {
+            a.push(array[i].route.path);
+        }
+        catch (error) {
+        }
+    }
+    res.send(a);
 });
 (0, product_1.default)(app);
 (0, user_1.default)(app);

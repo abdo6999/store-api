@@ -15,6 +15,7 @@ const order = (app) => {
     app.get("/get-orders", getOrders);
     app.get("/show-order/:id", showOrder);
     app.post("/create-order", middleware_1.authenticateToken, addOrder);
+    app.post("/add-product/:id", middleware_1.authenticateToken, addToCart);
     app.patch("/update-order/:id", middleware_1.authenticateToken, updateOrder);
     app.delete("/delete-order/:id", middleware_1.authenticateToken, deleteOrder);
 };
@@ -67,6 +68,20 @@ const deleteOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         res.status(404).send(`the id not exist in order ${error}`);
+    }
+});
+const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = req.body;
+    data.order_id = parseInt(req.params.id);
+    if (!data.order_id || !data.product_id || !data.quantity) {
+        return res.status(400).send("Missing one or more required parameters");
+    }
+    try {
+        const orders = yield orderTable.addToCart(data);
+        res.status(200).json(orders);
+    }
+    catch (error) {
+        res.status(400).send(`bad request create orders ${error}`);
     }
 });
 exports.default = order;

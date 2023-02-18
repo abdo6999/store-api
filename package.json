@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "up":"db-migrate up",
-    "down":"db-migrate down reset",
+    "down":"db-migrate down",
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
     "build": " npx tsc",

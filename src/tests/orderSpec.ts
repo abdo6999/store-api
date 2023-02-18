@@ -28,16 +28,6 @@ describe("Test order responses", () => {
     const response = await request
       .post("/create-order")
       .send({
-        cart: [
-          {
-            id: 59,
-            quantity: 3
-          },
-          {
-            id: 88,
-            quantity: 2
-          }
-        ],
         user_id: 5,
         stutas: false,
         orderDate: "23/06/2013"

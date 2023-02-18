@@ -99,6 +99,21 @@ class OrderTable {
             }
         });
     }
+    addToCart(o) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const connection = yield database_1.default.connect();
+                const data = Object.values(o);
+                const sql = createCart(o);
+                const result = yield connection.query(sql, data);
+                connection.release();
+                return result.rows[0];
+            }
+            catch (err) {
+                throw new Error(`Could not add product. Error: ${err}`);
+            }
+        });
+    }
 } // end of class
 exports.OrderTable = OrderTable;
 function updateOrderByID(cols, id) {
@@ -111,7 +126,6 @@ function updateOrderByID(cols, id) {
     query.push(set.join(", "));
     const reg = /^([\w]+)/;
     const updatValus = set.map(a => a.match(reg)[0]);
-    console.log(updatValus);
     let element = "";
     for (let i = 0; i < updatValus.length; i++) {
         element += updatValus[i];
@@ -123,6 +137,31 @@ function updateOrderByID(cols, id) {
     return query.join(" ");
 }
 function createOrder(cols) {
+    const len = Object.keys(cols).length;
+    const query = ["INSERT INTO orders("];
+    const set = [];
+    Object.keys(cols).forEach(function (key, i) {
+        if (i < len - 1) {
+            set.push(key + ",");
+        }
+        else {
+            set.push(key);
+        }
+    });
+    set.push(") VALUES(");
+    Object.keys(cols).forEach(function (key, i) {
+        if (i < len - 1) {
+            set.push(`$${i + 1},`);
+        }
+        else {
+            set.push(`$${i + 1}`);
+        }
+    });
+    set.push(") RETURNING *;");
+    query.push(set.join(" "));
+    return query.join(" ");
+}
+function createCart(cols) {
     const len = Object.keys(cols).length;
     const query = ["INSERT INTO orders("];
     const set = [];

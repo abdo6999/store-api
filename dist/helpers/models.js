@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Order = exports.User = exports.Product = void 0;
+exports.Cart = exports.Order = exports.User = exports.Product = void 0;
 class Product {
     constructor(id, title, price, rating, stock, brand, description, category, thumbnail, images) {
         this.id = id;
@@ -29,9 +29,8 @@ class User {
 }
 exports.User = User;
 class Order {
-    constructor(id, cart, user_id, stutas, orderDate) {
+    constructor(id, user_id, stutas, orderDate) {
         this.id = id;
-        this.cart = cart;
         this.user_id = user_id;
         this.stutas = stutas;
         this.orderDate = orderDate;
@@ -44,3 +43,4 @@ class Cart {
         this.quantity = quantity;
     }
 }
+exports.Cart = Cart;

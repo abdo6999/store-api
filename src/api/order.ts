@@ -1,13 +1,14 @@
 import { OrderTable } from "./../models/orders";
 import { Request, Response } from "express";
 import * as express from "express";
-import { Order } from "../helpers/models";
+import { Cart, Order } from "../helpers/models";
 import { authenticateToken } from "../helpers/middleware";
 
 const order = (app: express.Application) => {
   app.get("/get-orders", getOrders);
   app.get("/show-order/:id", showOrder);
   app.post("/create-order", authenticateToken, addOrder);
+  app.post("/add-product/:id", authenticateToken, addToCart);
   app.patch("/update-order/:id", authenticateToken, updateOrder);
   app.delete("/delete-order/:id", authenticateToken, deleteOrder);
 };
@@ -55,6 +56,19 @@ const deleteOrder = async (req: Request, res: Response) => {
     res.json(orders);
   } catch (error) {
     res.status(404).send(`the id not exist in order ${error}`);
+  }
+};
+const addToCart = async (req: Request, res: Response) => {
+  const data: Cart = req.body;
+  data.order_id = parseInt(req.params.id);
+  if (!data.order_id || !data.product_id || !data.quantity) {
+    return res.status(400).send("Missing one or more required parameters");
+  }
+  try {
+    const orders = await orderTable.addToCart(data);
+    res.status(200).json(orders);
+  } catch (error) {
+    res.status(400).send(`bad request create orders ${error}`);
   }
 };
 export default order;
