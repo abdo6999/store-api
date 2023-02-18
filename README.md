@@ -1,6 +1,5 @@
-# image-processor
-
-this is a image processor use it to resize an image
+# note
+may be script will not work as expcted on different operator system
 
 ## start the project
 
@@ -27,8 +26,8 @@ this is a image processor use it to resize an image
 npm run build to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ### test
-
-npm run test to to execute the unit tests with jasmine 
+1. npm run seed will seed data in test database 
+2. npm run test to to execute the unit tests with jasmine 
 
 ### serve
 
@@ -46,80 +45,11 @@ npm run prettier to run a dev server.
 
 node dist/. to run the build version
 
-## endpoint
+### up
 
-    "/" will get all route
+npm run up will do up to migratetion
 
-    "/get-products" will retarn all products
+### down
 
-    "/show-product/:id" will retarn product if id is exist
-
-    "/create-product" will create product if authenticated and enter valid body and retarn the new product data
-
-    "/update-product/:id"  will update product if authenticated and id is exist and retarn the updated data
-
-    "/delete-product/:id" will delete product if authenticated and id is exist and retarn the delete product data
-
-    "/get-users" will get all users
-
-
-    "/show-user/:id" retarn user if authenticated and id is exist and
-
-    "/create-user" will create user if you enter valid body retarn the new user data
-
-    "/refresh-token" will make new access token and retarn it
-
-    "/update-user/:id" will update user if authenticated and id is exist retarn the updated data
-
-    "/delete-user/:id" will delete user if authenticated and id is exist and retarn the delete user data
-
-    "/authenticate-user" will retarn access token and refreshtoken
-
-    "/get-orders" will get all orders
-
-
-    "/show-order/:id" retarn order if user_id is exist and
-
-    "/create-order" will create order if you authenticated and enter valid body retarn the new order data
-
-    "/update-order/:id" will update order if authenticated and id is exist retarn the updated data
-
-    "/delete-order/:id" will delete order if authenticated and id is exist and retarn the delete order data
-
-### status 401
-
-all route that need authenticatToken and you unauthenticated
-
-### status 404
-
-if route not exist
-
-### Data Shapes
-  #### Product
-  - id: number
-  - title: string
-  - price: number
-  - rating: number
-  - stock: number
-  - brand: string
-  - description: string
-  - category: string
-  - thumbnail: string
-  - images: string[]
-  #### users
-  - id: number
-  - firstName: string
-  - lastName: string
-  - password: string
-  - email: string
-  - gender: string
-  - username: string
-  #### users
-  - id: number
-  - cart: Cart[] Cart{product_id,quantity}
-  - user_id: number
-  - stutas: boolean
-  - orderDate: string
-
-
+npm run down will do down to migratetion
 
