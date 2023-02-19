@@ -55,7 +55,7 @@ class UserTable {
                 return { accessToken: userToken, refreshToken: userRefreshToken };
             }
             catch (err) {
-                throw new Error(`Could not add new user ${u.firstName}. ${err}`);
+                throw new Error(`Could not add new user ${u.firstname}. ${err}`);
             }
         });
     }

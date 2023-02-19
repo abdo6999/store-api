@@ -36,8 +36,8 @@ class Product {
 
 class User {
   id?: number;
-  firstName!: string;
-  lastName!: string;
+  firstname!: string;
+  lastname!: string;
   password!: string;
   email!: string;
   gender!: string;
@@ -52,8 +52,8 @@ class User {
     username: string
   ) {
     this.id = id;
-    this.firstName = firstName;
-    this.lastName = lastName;
+    this.firstname = firstName;
+    this.lastname = lastName;
     this.password = password;
     this.email = email;
     this.gender = gender;

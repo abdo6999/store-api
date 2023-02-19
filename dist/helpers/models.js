@@ -19,8 +19,8 @@ exports.Product = Product;
 class User {
     constructor(id, firstName, lastName, password, email, gender, username) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.firstname = firstName;
+        this.lastname = lastName;
         this.password = password;
         this.email = email;
         this.gender = gender;

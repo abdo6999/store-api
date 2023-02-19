@@ -1,15 +1,12 @@
 import * as supertest from "supertest";
 import app from "../server";
-
+import { UserTable } from "../models/users";
+const request = supertest(app);
+let user = new UserTable();
 describe("Test user values", () => {
-  it("check get-products endpoint retarn value", async () => {
-    const response = await request
-      .get("/get-users")
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(Object.keys(response.body[0])).toEqual([
+  it("check get-users endpoint retarn value", async () => {
+    const response = await user.index()
+    expect(Object.keys(response[0])).toEqual([
       "id",
       "firstname",
       "lastname",
@@ -19,13 +16,8 @@ describe("Test user values", () => {
       "username"
     ]);
   });
-  it("check show-product endpoint retarn value", async () => {
-    const response = await request
-      .get("/show-user/5")
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
+  it("check show-user endpoint retarn value", async () => {
+    const response = await user.show(5)
     let match = 0;
     let values = [
       5,
@@ -36,7 +28,7 @@ describe("Test user values", () => {
       "male",
       "kmeus4"
     ];
-    let res = Object.values(response.body);
+    let res = Object.values(response);
     for (let i = 0; i < res.length; i++) {
       if (values[i] === res[i]) {
         match += 1;
@@ -44,36 +36,29 @@ describe("Test user values", () => {
     }
     expect(match).toBe(6);
   });
-  it("check create-order endpoint retarn value", async () => {
-    const response = await request.post("/create-user").send({
-      firstName: "Mavis",
-      lastName: "Schultz",
+  it("check create-user endpoint retarn value", async () => {
+    const response = await user.create({
+      firstname: "Mavis",
+      lastname: "Schultz",
       gender: "male",
       email: "kmeus4@upenn.edu",
       username: "kmedsasseus4",
       password: "fghfdhdfgh"
     });
-    expect(Object.keys(response.body)).toEqual(["accessToken", "refreshToken"]);
+    expect(Object.keys(response)).toEqual(["accessToken", "refreshToken"]);
   });
-  it("check update-order endpoint retarn value", async () => {
-    const response = await request
-      .patch("/update-user/4")
-      .send({
-        lastName: "Schulssstz",
+  it("check update-user endpoint retarn value", async () => {
+    const response = await user.update({
+        lastname: "Schulssstz",
         email: "kddddd4@upenn.edu"
-      })
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(response.body).toEqual({
+      },8)
+    expect(response).toEqual({
       lastname: "Schulssstz",
       email: "kddddd4@upenn.edu"
     });
   });
 });
 
-const request = supertest(app);
 describe("Test user responses", () => {
   it("get get-users with Unauthorized endpoint to be 401", async () => {
     const response = await request.get("/get-users");

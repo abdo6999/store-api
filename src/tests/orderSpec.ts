@@ -1,41 +1,30 @@
 import * as supertest from "supertest";
 import app from "../server";
-
+import { OrderTable } from "../models/orders";
 const request = supertest(app);
+let order = new OrderTable();
 describe("Test order values", () => {
-  it("get get-orders endpoint retarn value", async () => {
-    const response = await request.get("/get-orders");
-    expect(response.body[0]).toEqual({ id: 1, stutas: false, user_id: 1 });
+  it("get get-orders  retarn value", async () => {
+    const response = await order.index();
+    expect(response[0]).toEqual({ id: 1, stutas: false, user_id: 1 });
   });
-  it("get show-order endpoint retarn value", async () => {
-    const response = await request.get("/show-order/5");
-    expect(response.body).toEqual({ id: 5, stutas: true, user_id: 8 });
+  it("get show-order  retarn value", async () => {
+    const response = await order.show(5);
+    expect(response).toEqual({ id: 5, stutas: true, user_id: 8 });
   });
-  it("post create-order endpoint retarn value", async () => {
-    const response = await request
-      .post("/create-order")
-      .send({
-        user_id: 5,
-        stutas: false
-      })
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(response.body).toEqual({ id: 16, user_id: 5, stutas: false });
+  it("post create-order  retarn value", async () => {
+    const response = await order.add({
+      user_id: 5,
+      stutas: false
+    });
+    expect(response).toEqual({ id: 16, user_id: 5, stutas: false });
   });
 
-  it("patch update-order retarn value", async () => {
-    const response = await request
-      .patch("/update-order/4")
-      .send({
+  it("patch update-order  value", async () => {
+    const response = await order.update({
         user_id: 3
-      })
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(response.body).toEqual({ user_id: 3 });
+      },1)
+    expect(response).toEqual({ user_id: 3 });
   });
 });
 

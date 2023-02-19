@@ -11,34 +11,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest = require("supertest");
 const server_1 = require("../server");
+const orders_1 = require("../models/orders");
 const request = supertest(server_1.default);
+let order = new orders_1.OrderTable();
 describe("Test order values", () => {
-    it("get get-orders endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get("/get-orders");
-        expect(response.body[0]).toEqual({ id: 1, stutas: false, user_id: 1 });
+    it("get get-orders  retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield order.index();
+        expect(response[0]).toEqual({ id: 1, stutas: false, user_id: 1 });
     }));
-    it("get show-order endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get("/show-order/5");
-        expect(response.body).toEqual({ id: 5, stutas: true, user_id: 8 });
+    it("get show-order  retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield order.show(5);
+        expect(response).toEqual({ id: 5, stutas: true, user_id: 8 });
     }));
-    it("post create-order endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .post("/create-order")
-            .send({
+    it("post create-order  retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield order.add({
             user_id: 5,
             stutas: false
-        })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
-        expect(response.body).toEqual({ id: 16, user_id: 5, stutas: false });
+        });
+        expect(response).toEqual({ id: 16, user_id: 5, stutas: false });
     }));
-    it("patch update-order with authorized and  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request
-            .patch("/update-order/4")
-            .send({
-            user_id: 3,
-        })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
-        expect(response.body).toEqual({ user_id: 3, });
+    it("patch update-order  value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield order.update({
+            user_id: 3
+        }, 1);
+        expect(response).toEqual({ user_id: 3 });
     }));
 });
 describe("Test order responses", () => {
@@ -93,7 +89,7 @@ describe("Test order responses", () => {
         const response = yield request
             .patch("/update-order/4")
             .send({
-            user_id: 3,
+            user_id: 3
         })
             .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);

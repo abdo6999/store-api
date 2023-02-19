@@ -1,12 +1,12 @@
 import * as supertest from "supertest";
 import app from "../server";
-
+import { ProductTable } from "../models/products";
 const request = supertest(app);
-
+let product = new ProductTable();
 describe("Test product values", () => {
-  it("check get-products endpoint retarn value", async () => {
-    const response = await request.get("/get-products");
-    expect(response.body[0]).toEqual({
+  it("check get-products  retarn value", async () => {
+    const response = await product.index();
+    expect(response[0]).toEqual({
       id: 1,
       title: "iPhone 9",
       description: "An apple mobile which is nothing like apple",
@@ -25,9 +25,9 @@ describe("Test product values", () => {
       ]
     });
   });
-  it("check show-product endpoint retarn value", async () => {
-    const response = await request.get("/show-product/5");
-    expect(response.body).toEqual({
+  it("check show-product  retarn value", async () => {
+    const response = await product.show(5);
+    expect(response).toEqual({
       id: 5,
       title: "Huawei P30",
       description:
@@ -45,31 +45,25 @@ describe("Test product values", () => {
       ]
     });
   });
-  it("check create-order endpoint retarn value", async () => {
-    const response = await request
-      .post("/create-product")
-      .send({
-        title: "MacBook Pro",
-        description:
-          "MacBook Pro 2021 with mini-LED display may launch between September, November",
-        price: 1749,
-        rating: 4.57,
-        stock: 83,
-        brand: "Apple",
-        category: "laptops",
-        thumbnail: "https://i.dummyjson.com/data/products/6/thumbnail.png",
-        images: [
-          "https://i.dummyjson.com/data/products/6/1.png",
-          "https://i.dummyjson.com/data/products/6/2.jpg",
-          "https://i.dummyjson.com/data/products/6/3.png",
-          "https://i.dummyjson.com/data/products/6/4.jpg"
-        ]
-      })
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(response.body).toEqual({
+  it("check create-product endpoint retarn value", async () => {
+    const response = await product.add({
+      title: "MacBook Pro",
+      description:
+        "MacBook Pro 2021 with mini-LED display may launch between September, November",
+      price: 1749,
+      rating: 4.57,
+      stock: 83,
+      brand: "Apple",
+      category: "laptops",
+      thumbnail: "https://i.dummyjson.com/data/products/6/thumbnail.png",
+      images: [
+        "https://i.dummyjson.com/data/products/6/1.png",
+        "https://i.dummyjson.com/data/products/6/2.jpg",
+        "https://i.dummyjson.com/data/products/6/3.png",
+        "https://i.dummyjson.com/data/products/6/4.jpg"
+      ]
+    });
+    expect(response).toEqual({
       id: 22,
       title: "MacBook Pro",
       description:
@@ -89,18 +83,12 @@ describe("Test product values", () => {
     });
   });
 
-  it("check update-order  endpoint retarn value", async () => {
-    const response = await request
-      .patch("/update-product/4")
-      .send({
+  it("check update-product  endpoint retarn value", async () => {
+    const response = await product.update({
         rating: 4.54,
         stock: 852
-      })
-      .set(
-        "Authorization",
-        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M"
-      );
-    expect(response.body).toEqual({
+      },8)
+    expect(response).toEqual({
       rating: 4.54,
       stock: 852
     });

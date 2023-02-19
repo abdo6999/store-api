@@ -37,7 +37,7 @@ export class ProductTable {
       throw new Error(`Could not add new product ${p.title}.  ${err}`);
     }
   }
-  async update(p: Partial<Product>, id: number): Promise<Product> {
+  async update(p: Partial<Product>, id: number): Promise<Partial<Product>> {
     try {
       const conn = await Client.connect();
       const data = Object.values(p);

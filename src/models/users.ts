@@ -36,10 +36,10 @@ export class UserTable {
       conn.release();
       return { accessToken: userToken, refreshToken: userRefreshToken };
     } catch (err) {
-      throw new Error(`Could not add new user ${u.firstName}. ${err}`);
+      throw new Error(`Could not add new user ${u.firstname}. ${err}`);
     }
   }
-  async update(u: Partial<User>, id: number): Promise<User> {
+  async update(u: Partial<User>, id: number): Promise<Partial<User>> {
     try {
       const conn = await Client.connect();
       const sql = updateUserByID(u, id);

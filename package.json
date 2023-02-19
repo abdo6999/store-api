@@ -7,7 +7,7 @@
     "create-db": "db-migrate --config database_create.json db:create store && db-migrate up -e dev",
     "create-test-db": "db-migrate --config database_create.json db:create store_test",
     "up":"db-migrate up",
-    "down":"db-migrate down * -e test",
+    "down":"db-migrate down *",
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
     "build": " npx tsc",

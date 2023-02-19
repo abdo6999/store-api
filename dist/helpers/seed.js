@@ -76,80 +76,80 @@ function createOrder(p) {
 function dataUser() {
     return [
         {
-            firstName: "Terry",
-            lastName: "Medhurst",
+            firstname: "Terry",
+            lastname: "Medhurst",
             gender: "male",
             email: "atuny0@sohu.com",
             username: "atuny0",
             password: "23423fgsdgsd"
         },
         {
-            firstName: "Sheldon",
-            lastName: "Quigley",
+            firstname: "Sheldon",
+            lastname: "Quigley",
             gender: "male",
             email: "hbingley1@plala.or.jp",
             username: "hbingley1",
             password: "2342fgds"
         },
         {
-            firstName: "Terrill",
-            lastName: "Hills",
+            firstname: "Terrill",
+            lastname: "Hills",
             gender: "male",
             email: "rshawe2@51.la",
             username: "rshawe2",
             password: "235234534fg"
         },
         {
-            firstName: "Miles",
-            lastName: "Cummerata",
+            firstname: "Miles",
+            lastname: "Cummerata",
             gender: "male",
             email: "yraigatt3@nature.com",
             username: "yraigatt3",
             password: "dfhfghf"
         },
         {
-            firstName: "Mavis",
-            lastName: "Schultz",
+            firstname: "Mavis",
+            lastname: "Schultz",
             gender: "male",
             email: "kmeus4@upenn.edu",
             username: "kmeus4",
             password: "fghfdhdfgh"
         },
         {
-            firstName: "Alison",
-            lastName: "Reichert",
+            firstname: "Alison",
+            lastname: "Reichert",
             gender: "female",
             email: "jtreleven5@nhs.uk",
             username: "jtreleven5",
             password: "fghghfdh"
         },
         {
-            firstName: "Oleta",
-            lastName: "Abbott",
+            firstname: "Oleta",
+            lastname: "Abbott",
             gender: "female",
             email: "dpettegre6@columbia.edu",
             username: "dpettegre6",
             password: "dfasfsdfs"
         },
         {
-            firstName: "Ewell",
-            lastName: "Mueller",
+            firstname: "Ewell",
+            lastname: "Mueller",
             gender: "male",
             email: "ggude7@chron.com",
             username: "ggude7",
             password: "ffffff"
         },
         {
-            firstName: "Demetrius",
-            lastName: "Corkery",
+            firstname: "Demetrius",
+            lastname: "Corkery",
             gender: "male",
             email: "nloiterton8@aol.com",
             username: "nloiterton8",
             password: "dddddd"
         },
         {
-            firstName: "Eleanora",
-            lastName: "Price",
+            firstname: "Eleanora",
+            lastname: "Price",
             gender: "female",
             email: "umcgourty9@jalbum.net",
             username: "umcgourty9",
@@ -503,63 +503,63 @@ function dataOrder() {
     return [
         {
             user_id: 1,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 3,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 3,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 4,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 8,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 1,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 7,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 6,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 3,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 9,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 8,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 5,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 8,
-            stutas: false,
+            stutas: false
         },
         {
             user_id: 3,
-            stutas: true,
+            stutas: true
         },
         {
             user_id: 1,
-            stutas: false,
+            stutas: false
         }
     ];
 }

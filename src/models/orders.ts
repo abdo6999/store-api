@@ -37,7 +37,7 @@ export class OrderTable {
       throw new Error(`Could not add new order . ${err}`);
     }
   }
-  async update(o: Partial<Order>, id: number): Promise<Order> {
+  async update(o: Partial<Order>, id: number): Promise<Partial<Order>> {
     try {
       const conn = await Client.connect();
       const data = Object.values(o);
