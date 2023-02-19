@@ -5,12 +5,7 @@ may be script will not work as expcted on different operator system
 
 1.  clone the repo
 2.  run npm install
-3. create database and test database 
-
-    CREAT DATABASE store;
-
-    CREAT DATABASE store_test;
-4.  set up .env file with this 
+3. set up .env file with this 
 
     POSTGRES_HOST = '127.0.0.1'
 
@@ -32,6 +27,7 @@ may be script will not work as expcted on different operator system
     REFRESH_TOKEN_SECRET = '0c4d35e88edc1aecb86d9021f487dccb93272e7444a982d4b046cca53cd98694e89ca6a6376a9b62f4f60a93584b0e3c9258d85cf7a3778b14fa895f5b0
     cc3d4'
     
+4.  npm run create-test-db and  npm run create-db
 5.  run npm start to serve
 
 ## script
@@ -66,4 +62,11 @@ npm run up will do up to migratetion
 ### down
 
 npm run down will do down to migratetion
+
+### create database
+npm run create-db
+
+### create test database
+
+npm run create-test-db
 
