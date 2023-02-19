@@ -8,20 +8,30 @@ may be script will not work as expcted on different operator system
 3. create database and test database 
 
     CREAT DATABASE store;
-    
+
     CREAT DATABASE store_test;
 4.  set up .env file with this 
+
     POSTGRES_HOST = '127.0.0.1'
+
     POSTGRES_DB = 'store'
+
     POSTGRES_USER = postgres_user
+
     POSTGRES_PASSWORD = postgres_password
+
     POSTGRES_TEST_DB = 'store_test'
+
     PEPPER='storeDCRYPT_PASSWORD_'
+
     SALT_ROUNDS= '10'
+
     ACCESS_TOKEN_SECRET = '3aec27d374fb1b37b3272fea86a9693ded1fabe6be120569d44c85ca755995dd99e1f1751f18add0b6e7ee0d9ebf724156b892c3ee8719d336c5c9508d0
     e074b'
+
     REFRESH_TOKEN_SECRET = '0c4d35e88edc1aecb86d9021f487dccb93272e7444a982d4b046cca53cd98694e89ca6a6376a9b62f4f60a93584b0e3c9258d85cf7a3778b14fa895f5b0
     cc3d4'
+    
 5.  run npm start to serve
 
 ## script
