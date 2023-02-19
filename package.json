@@ -5,14 +5,13 @@
   "main": "index.js",
   "scripts": {
     "up":"db-migrate up",
-    "down":"db-migrate down",
+    "down":"db-migrate down *",
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
     "build": " npx tsc",
     "jasmine": "jasmine",
-    "test": " set NODE_ENV_TEST=test && npx tsc && db-migrate --env test up &&  jasmine ",
-    "start": " nodemon src/server.ts ",
-    "seed": "set NODE_ENV_TEST=test && ts-node src/helpers/seed.ts "
+    "test": " set NODE_ENV_TEST=test && npx tsc  && db-migrate --env test up && ts-node src/helpers/seed.ts  && jasmine && db-migrate --env test down * ",
+    "start": " nodemon src/server.ts "
   },
   "eslintIgnore": [
     "tests"
