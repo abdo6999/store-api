@@ -2,7 +2,6 @@
 CREATE TABLE orders(
   id SERIAL PRIMARY KEY,
   stutas BOOLEAN NOT NULL,
-  orderDate DATE NOT NULL,
   user_id INT NOT NULL,
   CONSTRAINT fk_orders_users
         FOREIGN KEY (user_id)

@@ -65,17 +65,14 @@ class Order {
   id?: number;
   user_id!: number;
   stutas!: boolean;
-  orderDate!: string;
   constructor(
     id: number,
     user_id: number,
     stutas: boolean,
-    orderDate: string
   ) {
     this.id = id;
     this.user_id = user_id;
     this.stutas = stutas;
-    this.orderDate = orderDate;
   }
 }
 class Cart {
