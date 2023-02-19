@@ -6,7 +6,9 @@ may be script will not work as expcted on different operator system
 1.  clone the repo
 2.  run npm install
 3. create database and test database 
+
     CREAT DATABASE store;
+    
     CREAT DATABASE store_test;
 4.  set up .env file with this 
     POSTGRES_HOST = '127.0.0.1'
