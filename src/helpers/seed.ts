@@ -4,10 +4,10 @@ import * as bcrypt from "bcrypt";
 import * as env from "dotenv";
 env.config();
 const { PEPPER, SALT_ROUNDS } = process.env;
-createProduct(dataProduct());
-
-createUser(dataUser()).then(() => {
-  createOrder(dataOrder());
+createProduct(dataProduct()).then(() => {
+  createUser(dataUser()).then(() => {
+    createOrder(dataOrder());
+  });
 });
 
 async function createProduct(p: Product[]) {
@@ -504,92 +504,63 @@ function dataOrder(): Order[] {
   return [
     {
       user_id: 1,
-      stutas: false,
-      
+      stutas: false
     },
     {
-      
       user_id: 3,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 3,
-      stutas: false,
-      
+      stutas: false
     },
     {
-      
       user_id: 4,
-      stutas: false,
-      
+      stutas: false
     },
     {
-     
       user_id: 8,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 1,
-      stutas: true,
-      
+      stutas: true
     },
     {
-     
       user_id: 7,
-      stutas: false,
-      
+      stutas: false
     },
     {
-      
       user_id: 6,
-      stutas: false,
-      
+      stutas: false
     },
     {
-      
       user_id: 3,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 9,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 8,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 5,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 8,
-      stutas: false,
-      
+      stutas: false
     },
     {
-      
       user_id: 3,
-      stutas: true,
-      
+      stutas: true
     },
     {
-      
       user_id: 1,
-      stutas: false,
-      
+      stutas: false
     }
   ];
 }

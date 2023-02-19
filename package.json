@@ -7,13 +7,13 @@
     "create-db": "db-migrate --config database_create.json db:create store && db-migrate up -e dev",
     "create-test-db": "db-migrate --config database_create.json db:create store_test",
     "up":"db-migrate up",
-    "down":"db-migrate down *",
+    "down":"db-migrate down * -e test",
     "lint": "eslint ./src/**/*.ts",
     "prettier": "prettier --config .prettierrc ./src/**/*.ts --write",
     "build": " npx tsc",
     "jasmine": "jasmine",
     "test": " set NODE_ENV_TEST=test && npx tsc  && db-migrate --env test up && ts-node src/helpers/seed.ts  && jasmine && db-migrate --env test down * ",
-    "start": " nodemon src/server.ts "
+    "start": "set NODE_ENV_TEST=test && nodemon src/server.ts "
   },
   "eslintIgnore": [
     "tests"

@@ -14,9 +14,10 @@ const bcrypt = require("bcrypt");
 const env = require("dotenv");
 env.config();
 const { PEPPER, SALT_ROUNDS } = process.env;
-createProduct(dataProduct());
-createUser(dataUser()).then(() => {
-    createOrder(dataOrder());
+createProduct(dataProduct()).then(() => {
+    createUser(dataUser()).then(() => {
+        createOrder(dataOrder());
+    });
 });
 function createProduct(p) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -503,77 +504,62 @@ function dataOrder() {
         {
             user_id: 1,
             stutas: false,
-            orderDate: "22/05/2023"
         },
         {
             user_id: 3,
             stutas: true,
-            orderDate: "20/12/2022"
         },
         {
             user_id: 3,
             stutas: false,
-            orderDate: "31/07/2022"
         },
         {
             user_id: 4,
             stutas: false,
-            orderDate: "28/09/2022"
         },
         {
             user_id: 8,
             stutas: true,
-            orderDate: "27/09/2023"
         },
         {
             user_id: 1,
             stutas: true,
-            orderDate: "07/12/2023"
         },
         {
             user_id: 7,
             stutas: false,
-            orderDate: "29/04/2022"
         },
         {
             user_id: 6,
             stutas: false,
-            orderDate: "03/02/2023"
         },
         {
             user_id: 3,
             stutas: true,
-            orderDate: "25/01/2024"
         },
         {
             user_id: 9,
             stutas: true,
-            orderDate: "28/07/2022"
         },
         {
             user_id: 8,
             stutas: true,
-            orderDate: "13/03/2023"
         },
         {
             user_id: 5,
             stutas: true,
-            orderDate: "02/08/2022"
         },
         {
             user_id: 8,
             stutas: false,
-            orderDate: "03/10/2023"
         },
         {
             user_id: 3,
             stutas: true,
-            orderDate: "07/02/2024"
         },
         {
             user_id: 1,
             stutas: false,
-            orderDate: "24/08/2023"
         }
     ];
 }

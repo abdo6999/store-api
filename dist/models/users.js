@@ -118,7 +118,7 @@ class UserTable {
                 return resualt.rows[0];
             }
             catch (error) {
-                throw new Error(`cannot connect with products ${error}`);
+                throw new Error(`cannot connect with user ${error}`);
             }
         });
     }
@@ -141,7 +141,7 @@ function updateUserByID(cols, id) {
             element += ",";
         }
     }
-    query.push("WHERE id = " + id + "RETURNING " + element);
+    query.push("WHERE id = " + id + " RETURNING " + element + ";");
     return query.join(" ");
 }
 function createUser(cols) {

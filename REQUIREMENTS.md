@@ -8,49 +8,49 @@ These are the notes from a meeting with the frontend developer that describe wha
 
 #### root
 
-- "/" will get all route
+- (/) will get all route
 
 #### Products
 
-- "/get-products" will retarn all products
+- GET (/get-products) will retarn all products
 
-- "/show-product/:id" will retarn product if id is exist
+- GET (/show-product/:id) will retarn product if id is exist
 
-- "/create-product" [token required] will create product if enter valid body and retarn the new product data
+- POST (/create-product) [token required] will create product if enter valid body and retarn the new product data
 
-- "/update-product/:id" [token required] will update product if id is exist and retarn the updated data
+- PATCH (/update-product/:id) [token required] will update product if id is exist and retarn the updated data
 
-- "/delete-product/:id" [token required] will delete product if id is exist and retarn the delete product data
+- DELETE (/delete-product/:id) [token required] will delete product if id is exist and retarn the delete product data
 
 #### Users
 
-- "/get-users" [token required] will get all users
+- GET (/get-users) [token required] will get all users
 
-* "/show-user/:id" [token required] retarn user if id is exist and
+- GET (/show-user/:id) [token required] retarn user if id is exist and
 
-* "/create-user" will create user if you enter valid body retarn the new user data
+- POST (/create-user) will create user if you enter valid body retarn the new user data
 
-* "/refresh-token" [token required] will make new access token and retarn it
+- POST (/refresh-token) [token required] will make new access token and retarn it
 
-* "/update-user/:id" [token required] will update user if id is exist retarn the updated data
+- PATCH (/update-user/:id) [token required] will update user if id is exist retarn the updated data
 
-* "/delete-user/:id" [token required] will delete user if id is exist and retarn the delete user data
+- DELETE (/delete-user/:id) [token required] will delete user if id is exist and retarn the delete user data
 
-* "/authenticate-user" will retarn access token and refreshtoken
+- POST (/authenticate-user) will retarn access token and refreshtoken
 
 #### Orders
 
-- "/get-orders" will get all orders
+- GET (/get-orders) will get all orders
 
-- "/show-order/:id" retarn order if user_id is exist and
+- GET (/show-order/:id) retarn order if user_id is exist and
 
-- "/create-order" [token required] will create order if you enter valid body retarn the new order data
+- POST (/create-order) [token required] will create order if you enter valid body retarn the new order data
 
-- "/add-product/:id" [token required] will add product to cart if id is exist 
+- POST (/add-product/:id) [token required] will add product to cart if id is exist
 
-- "/update-order/:id" [token required] will update order if id is exist retarn the updated data
+- PATCH (/update-order/:id) [token required] will update order if id is exist retarn the updated data
 
-- "/delete-order/:id" [token required] will delete order if id is ex
+- DELETE (/delete-order/:id) [token required] will delete order if id is exist
 
 ### status 401
 
@@ -59,6 +59,7 @@ all route that need authenticatToken and you unauthenticated
 ### status 404
 
 if route not exist
+
 ## Data Shapes
 
 #### Product
@@ -87,12 +88,11 @@ if route not exist
 #### users
 
 - id: number
-- cart: Cart[] Cart{}
 - user_id: number
 - stutas: boolean
-- orderDate: string
 
 #### cart
+
 - id
 - order_id
 - product_id

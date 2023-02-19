@@ -9,14 +9,13 @@ const app: express.Application = express();
 const address = "4000";
 app.use(bodyParser.json());
 
-app.get("/", function(req: Request, res: Response) {
-  const array = app._router.stack
-  const a = []
+app.get("/", function(_req: Request, res: Response) {
+  const array = app._router.stack;
+  const a = [];
   for (let i = 0; i < array.length; i++) {
     try {
-      a.push(array[i].route.path) ;
-    } catch (error) {
-    }
+      a.push(array[i].route.path);
+    } catch (error) {}
   }
   res.send(a);
 });

@@ -12,6 +12,99 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const supertest = require("supertest");
 const server_1 = require("../server");
 const request = supertest(server_1.default);
+describe("Test product values", () => {
+    it("get get-products endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get("/get-products");
+        expect(response.body[0]).toEqual({
+            id: 1,
+            title: "iPhone 9",
+            description: "An apple mobile which is nothing like apple",
+            price: 549,
+            rating: 4.69,
+            stock: 94,
+            brand: "Apple",
+            category: "smartphones",
+            thumbnail: "https://i.dummyjson.com/data/products/1/thumbnail.jpg",
+            images: [
+                "https://i.dummyjson.com/data/products/1/1.jpg",
+                "https://i.dummyjson.com/data/products/1/2.jpg",
+                "https://i.dummyjson.com/data/products/1/3.jpg",
+                "https://i.dummyjson.com/data/products/1/4.jpg",
+                "https://i.dummyjson.com/data/products/1/thumbnail.jpg"
+            ]
+        });
+    }));
+    it("get show-product endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.get("/show-product/5");
+        expect(response.body).toEqual({
+            id: 5,
+            title: "Huawei P30",
+            description: "Huawei’s re-badged P30 Pro New Edition was officially unveiled yesterday in Germany and now the device has made its way to the UK.",
+            price: 499,
+            rating: 4.09,
+            stock: 32,
+            brand: "Huawei",
+            category: "smartphones",
+            thumbnail: "https://i.dummyjson.com/data/products/5/thumbnail.jpg",
+            images: [
+                "https://i.dummyjson.com/data/products/5/1.jpg",
+                "https://i.dummyjson.com/data/products/5/2.jpg",
+                "https://i.dummyjson.com/data/products/5/3.jpg"
+            ]
+        });
+    }));
+    it("post create-order endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .post("/create-product")
+            .send({
+            title: "MacBook Pro",
+            description: "MacBook Pro 2021 with mini-LED display may launch between September, November",
+            price: 1749,
+            rating: 4.57,
+            stock: 83,
+            brand: "Apple",
+            category: "laptops",
+            thumbnail: "https://i.dummyjson.com/data/products/6/thumbnail.png",
+            images: [
+                "https://i.dummyjson.com/data/products/6/1.png",
+                "https://i.dummyjson.com/data/products/6/2.jpg",
+                "https://i.dummyjson.com/data/products/6/3.png",
+                "https://i.dummyjson.com/data/products/6/4.jpg"
+            ]
+        })
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
+        expect(response.body).toEqual({
+            id: 22,
+            title: "MacBook Pro",
+            description: "MacBook Pro 2021 with mini-LED display may launch between September, November",
+            price: 1749,
+            rating: 4.57,
+            stock: 83,
+            brand: "Apple",
+            category: "laptops",
+            thumbnail: "https://i.dummyjson.com/data/products/6/thumbnail.png",
+            images: [
+                "https://i.dummyjson.com/data/products/6/1.png",
+                "https://i.dummyjson.com/data/products/6/2.jpg",
+                "https://i.dummyjson.com/data/products/6/3.png",
+                "https://i.dummyjson.com/data/products/6/4.jpg"
+            ]
+        });
+    }));
+    it("patch update-order with authorized and  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .patch("/update-product/4")
+            .send({
+            rating: 4.54,
+            stock: 852
+        })
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
+        expect(response.body).toEqual({
+            rating: 4.54,
+            stock: 852
+        });
+    }));
+});
 describe("Test product responses", () => {
     it("get get-products endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request.get("/get-products");
@@ -61,7 +154,7 @@ describe("Test product responses", () => {
                 "https://i.dummyjson.com/data/products/21/3.jpg"
             ]
         })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
     it("post create-product with authorized and unvalid body  endpoint to be 400", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -80,7 +173,7 @@ describe("Test product responses", () => {
                 "https://i.dummyjson.com/data/products/21/3.jpg"
             ]
         })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(400);
     }));
     it("patch update-product with Unauthorized  and  valid body endpoint to be 401", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -109,13 +202,13 @@ describe("Test product responses", () => {
                 "https://i.dummyjson.com/data/products/21/3.jpg"
             ]
         })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
     it("delete delete-product with authorized and  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request
-            .delete("/delete-product/4")
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .delete("/delete-product/8")
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
 });

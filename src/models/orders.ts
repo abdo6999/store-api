@@ -13,15 +13,15 @@ export class OrderTable {
       throw new Error(`cannot get orders ${error}`);
     }
   }
-  async show(user_id: number): Promise<Order> {
+  async show(id: number): Promise<Order> {
     try {
       const conn = await Client.connect();
-      const sql = "SELECT * FROM orders WHERE user_id=($1);";
-      const result = await conn.query(sql, [user_id]);
+      const sql = "SELECT * FROM orders WHERE id=($1);";
+      const result = await conn.query(sql, [id]);
       conn.release();
       return result.rows[0];
     } catch (err) {
-      throw new Error(`Could not find products ${user_id}. ${err}`);
+      throw new Error(`Could not find order ${id}. ${err}`);
     }
   }
   async add(o: Order): Promise<Order> {
@@ -34,7 +34,7 @@ export class OrderTable {
       conn.release();
       return Order;
     } catch (err) {
-      throw new Error(`Could not add new book ${o.orderDate}. ${err}`);
+      throw new Error(`Could not add new order . ${err}`);
     }
   }
   async update(o: Partial<Order>, id: number): Promise<Order> {
@@ -42,22 +42,23 @@ export class OrderTable {
       const conn = await Client.connect();
       const data = Object.values(o);
       const sql = updateOrderByID(o, id);
+
       const resualt = await conn.query(sql, data);
       conn.release();
       return resualt.rows[0];
     } catch (error) {
-      throw new Error(`cannot connect with products ${error}`);
+      throw new Error(`cannot connect with order ${error}`);
     }
   }
   async delete(id: number): Promise<Order> {
     try {
       const conn = await Client.connect();
-      const sql = "DELETE FROM  products WHERE id =($1) RETURNING *;";
+      const sql = "DELETE FROM  orders WHERE id =($1) RETURNING *";
       const resualt = await conn.query(sql, [id]);
       conn.release();
       return resualt.rows[0];
     } catch (error) {
-      throw new Error(`cannot connect with products ${error}`);
+      throw new Error(`cannot connect with order ${error}`);
     }
   }
   async deleteAll(): Promise<Order> {
@@ -68,21 +69,21 @@ export class OrderTable {
       conn.release();
       return resualt.rows[0];
     } catch (error) {
-      throw new Error(`cannot connect with products ${error}`);
+      throw new Error(`cannot connect with order ${error}`);
     }
   }
   async addToCart(o: Cart): Promise<Cart> {
     try {
-        const connection = await Client.connect()
-        const data = Object.values(o);
-        const sql = createCart(o);
-        const result = await connection.query(sql, data)
-        connection.release()
-        return result.rows[0]
+      const connection = await Client.connect();
+      const data = Object.values(o);
+      const sql = createCart(o);
+      const result = await connection.query(sql, data);
+      connection.release();
+      return result.rows[0];
     } catch (err) {
-        throw new Error(`Could not add product. Error: ${err}`)
+      throw new Error(`Could not add product to cart. Error: ${err}`);
     }
-}
+  }
 } // end of class
 
 function updateOrderByID(cols: Partial<Order>, id: number) {
@@ -102,7 +103,7 @@ function updateOrderByID(cols: Partial<Order>, id: number) {
       element += ",";
     }
   }
-  query.push("WHERE id = " + id + "RETURNING " + element);
+  query.push("WHERE id = " + id + " RETURNING " + element + ";");
   return query.join(" ");
 }
 

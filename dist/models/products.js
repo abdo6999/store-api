@@ -52,7 +52,7 @@ class ProductTable {
                 return product;
             }
             catch (err) {
-                throw new Error(`Could not add new book ${p.title}.  ${err}`);
+                throw new Error(`Could not add new product ${p.title}.  ${err}`);
             }
         });
     }
@@ -115,10 +115,10 @@ function updateProductByID(cols, id) {
     for (let i = 0; i < updatValus.length; i++) {
         element += updatValus[i];
         if (i < updatValus.length - 1) {
-            element += ",";
+            element += ", ";
         }
     }
-    query.push("WHERE id = " + id + "RETURNING " + element);
+    query.push("WHERE id = " + id + " RETURNING " + element + ";");
     return query.join(" ");
 }
 function createProduct(cols) {

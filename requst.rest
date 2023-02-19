@@ -1,9 +1,6 @@
-POST  http://localhost:4000/refresh-token
-content-type: application/json
+GET    http://localhost:4000/get-products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M
 
-{
-  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY0ODc1NzYsImV4cCI6MTcwODA0NTE3Nn0.T3PZtEbvoD3EP69gS5i-SSoG_3jYHmL23Tn6e04xP9g"
-}
 
 
 # GET  http://localhost:4000/show-user/1

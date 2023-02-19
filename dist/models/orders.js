@@ -26,17 +26,17 @@ class OrderTable {
             }
         });
     }
-    show(user_id) {
+    show(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = "SELECT * FROM orders WHERE user_id=($1);";
-                const result = yield conn.query(sql, [user_id]);
+                const sql = "SELECT * FROM orders WHERE id=($1);";
+                const result = yield conn.query(sql, [id]);
                 conn.release();
                 return result.rows[0];
             }
             catch (err) {
-                throw new Error(`Could not find products ${user_id}. ${err}`);
+                throw new Error(`Could not find order ${id}. ${err}`);
             }
         });
     }
@@ -52,7 +52,7 @@ class OrderTable {
                 return Order;
             }
             catch (err) {
-                throw new Error(`Could not add new book ${o.orderDate}. ${err}`);
+                throw new Error(`Could not add new order . ${err}`);
             }
         });
     }
@@ -67,7 +67,7 @@ class OrderTable {
                 return resualt.rows[0];
             }
             catch (error) {
-                throw new Error(`cannot connect with products ${error}`);
+                throw new Error(`cannot connect with order ${error}`);
             }
         });
     }
@@ -75,13 +75,13 @@ class OrderTable {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const conn = yield database_1.default.connect();
-                const sql = "DELETE FROM  products WHERE id =($1) RETURNING *;";
+                const sql = "DELETE FROM  orders WHERE id =($1) RETURNING *";
                 const resualt = yield conn.query(sql, [id]);
                 conn.release();
                 return resualt.rows[0];
             }
             catch (error) {
-                throw new Error(`cannot connect with products ${error}`);
+                throw new Error(`cannot connect with order ${error}`);
             }
         });
     }
@@ -95,7 +95,7 @@ class OrderTable {
                 return resualt.rows[0];
             }
             catch (error) {
-                throw new Error(`cannot connect with products ${error}`);
+                throw new Error(`cannot connect with order ${error}`);
             }
         });
     }
@@ -110,7 +110,7 @@ class OrderTable {
                 return result.rows[0];
             }
             catch (err) {
-                throw new Error(`Could not add product. Error: ${err}`);
+                throw new Error(`Could not add product to cart. Error: ${err}`);
             }
         });
     }
@@ -133,7 +133,7 @@ function updateOrderByID(cols, id) {
             element += ",";
         }
     }
-    query.push("WHERE id = " + id + "RETURNING " + element);
+    query.push("WHERE id = " + id + " RETURNING " + element + ";");
     return query.join(" ");
 }
 function createOrder(cols) {

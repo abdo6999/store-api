@@ -90,7 +90,7 @@ export class UserTable {
       conn.release();
       return resualt.rows[0];
     } catch (error) {
-      throw new Error(`cannot connect with products ${error}`);
+      throw new Error(`cannot connect with user ${error}`);
     }
   }
 } // user end
@@ -113,7 +113,7 @@ function updateUserByID(cols: Partial<User>, id: number) {
       element += ",";
     }
   }
-  query.push("WHERE id = " + id + "RETURNING " + element);
+  query.push("WHERE id = " + id + " RETURNING " + element + ";");
   return query.join(" ");
 }
 

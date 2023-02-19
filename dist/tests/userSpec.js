@@ -11,6 +11,68 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest = require("supertest");
 const server_1 = require("../server");
+describe("Test user values", () => {
+    it("get get-products endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .get("/get-users")
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
+        expect(Object.keys(response.body[0])).toEqual([
+            "id",
+            "firstname",
+            "lastname",
+            "password",
+            "email",
+            "gender",
+            "username"
+        ]);
+    }));
+    it("get show-product endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .get("/show-user/5")
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
+        let match = 0;
+        let values = [
+            5,
+            "Mavis",
+            "Schultz",
+            ,
+            "kmeus4@upenn.edu",
+            "male",
+            "kmeus4"
+        ];
+        let res = Object.values(response.body);
+        for (let i = 0; i < res.length; i++) {
+            if (values[i] === res[i]) {
+                match += 1;
+            }
+        }
+        expect(match).toBe(6);
+    }));
+    it("post create-order endpoint retarn value", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request.post("/create-user").send({
+            firstName: "Mavis",
+            lastName: "Schultz",
+            gender: "male",
+            email: "kmeus4@upenn.edu",
+            username: "kmedsasseus4",
+            password: "fghfdhdfgh"
+        });
+        expect(Object.keys(response.body)).toEqual(["accessToken", "refreshToken"]);
+    }));
+    it("patch update-order with authorized and  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
+        const response = yield request
+            .patch("/update-user/4")
+            .send({
+            lastName: "Schulssstz",
+            email: "kddddd4@upenn.edu"
+        })
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
+        expect(response.body).toEqual({
+            lastname: "Schulssstz",
+            email: "kddddd4@upenn.edu"
+        });
+    }));
+});
 const request = supertest(server_1.default);
 describe("Test user responses", () => {
     it("get get-users with Unauthorized endpoint to be 401", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,7 +82,7 @@ describe("Test user responses", () => {
     it("get get-users with authorized endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request
             .get("/get-users")
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
     it("get show-user with Unauthorized and  invalid query endpoint to be 401", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -30,7 +92,7 @@ describe("Test user responses", () => {
     it("get show-user with authorized valid query endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request
             .get("/show-user/5")
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
     it("post create-user with  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,13 +131,13 @@ describe("Test user responses", () => {
             lastName: "Reichert",
             gender: "female"
         })
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
     it("delete delete-user with authorized and  valid body endpoint to be 200", () => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield request
             .delete("/delete-user/4")
-            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY2NDM5NzgsImV4cCI6MTY3NjgxNjc3OH0.PwADnecdJn-GZou8Q7SdSRzMe197AZsLml1Ysc1ih5M");
+            .set("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJzaGF3ZTIiLCJpYXQiOjE2NzY4MTczNDYsImV4cCI6MTY3Njk5MDE0Nn0.S-o0HDruYndaBzgYENIr_vULBjC1SARzAm91neA7P3M");
         expect(response.status).toBe(200);
     }));
 });

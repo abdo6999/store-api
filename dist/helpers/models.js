@@ -29,11 +29,10 @@ class User {
 }
 exports.User = User;
 class Order {
-    constructor(id, user_id, stutas, orderDate) {
+    constructor(id, user_id, stutas) {
         this.id = id;
         this.user_id = user_id;
         this.stutas = stutas;
-        this.orderDate = orderDate;
     }
 }
 exports.Order = Order;

@@ -34,7 +34,7 @@ export class ProductTable {
       conn.release();
       return product;
     } catch (err) {
-      throw new Error(`Could not add new book ${p.title}.  ${err}`);
+      throw new Error(`Could not add new product ${p.title}.  ${err}`);
     }
   }
   async update(p: Partial<Product>, id: number): Promise<Product> {
@@ -87,10 +87,10 @@ function updateProductByID(cols: Partial<Product>, id: number) {
   for (let i = 0; i < updatValus.length; i++) {
     element += updatValus[i];
     if (i < updatValus.length - 1) {
-      element += ",";
+      element += ", ";
     }
   }
-  query.push("WHERE id = " + id + "RETURNING " + element);
+  query.push("WHERE id = " + id + " RETURNING " + element + ";");
   return query.join(" ");
 }
 
